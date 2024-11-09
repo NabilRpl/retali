@@ -1,60 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
 import 'doa_dzikir_antara_rukun_yamani_dan_hajar_aswad.dart';
 import 'doa_dzikir_saat_berada_dishafa_dan_marwah_ketika_melaksanakan_sai.dart';
 import 'doa_dzikir_saat_menghadapkan_wajah_ke_hajar_aswad.dart';
 import 'doa_dzikir_saat_menuju_maqam_ibrahim_setelah_selesai_thawaf.dart';
 import 'doa_dzikir_saat_menuju_shafa_untuk_mengawali_sai.dart';
 import 'doa_ketika_melakukan_raml.dart';
+import 'doa_masuk_masjidil_haram_screen.dart';
+import 'doa_melihat_kaabah_screen.dart';
 import 'doa_niat_ihram_screen.dart';
 import 'doa_saat_kehendak_minum_air_zam_zam.dart';
 import 'doa_talbiyah_screen.dart';
 
 class DoaDoaScreen extends StatelessWidget {
+  final List<String> carouselImages = [
+    'assets/images/banner_doa.jpg',
+    'assets/images/banner_doa.jpg',
+    'assets/images/banner_doa.jpg',
+    // Add more image paths as needed
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'DOA-DOA',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-      ),
       body: Column(
         children: [
           SizedBox(height: 20),
-          Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 250,
-              margin: EdgeInsets.all(16),
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Color(0xFF673AB7), Color(0xFF9575CD)],
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Image.asset(
-                  'assets/images/quran.png',
-                  fit: BoxFit.cover,
-                  height: 150,
-                ),
-              ),
+          CarouselSlider(
+            options: CarouselOptions(
+              height: 250.0,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              viewportFraction: 1.0, // Full width for each image
             ),
+            items: carouselImages.map((imagePath) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF673AB7), Color(0xFF9575CD)],
+                  ),
+                ),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              );
+            }).toList(),
           ),
+          SizedBox(height: 20), // Add spacing here
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Surah',
+                  'Doa-doa',
                   style: TextStyle(
                     color: Colors.purple,
                     fontSize: 24,
@@ -168,80 +174,6 @@ class DoaDoaScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class DoaMasukMasjidilHaramScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Doa Masuk Masjidil Haram')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Doa Masuk Masjidil Haram',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-             Text(
-              'Arab:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'أَعُوْذُ بِاللهِ الْعَظِيْمِ وَبِوَجْهِهِ الْكَرِيْمِ وَسُلْطَانِهِ الْقَدِيْمِ مِنَ الشَّيْطَانِ الرَّجِيْمِ, بِسْمِ اللهِ وَالصَّلَاةُ وَالسَّلَامُ عَلَى رَسُوْلِ اللهِ, اَللَّهُمَّ افْتَحْ لِيْ أَبْوَابَ رَحْمَتِكَ',
-              textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 28), // Ukuran lebih besar
-              textDirection: TextDirection.rtl, // Teks berarah kanan
-            ),
-             Text(
-              'Latin:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Auudzu billaahi al-aziimi wa biwajhihi al-kariimi wa sulthaanihi al-qadiimi minasy-syaithaani ar-rajiim, bismillaahi was-shalaatu was-salaamu \'ala rasuulillaah, Allahummaftah lii abwaaba rahmatika',
-            ),
-            SizedBox(height: 10),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DoaMelihatKaabahScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Doa Saat Melihat Ka\'bah')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Doa Saat Melihat Ka\'bah',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            Text(
-              'Arab:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'اللَّهُمَّ أَنْتَ السَّلَامُ ...',
-              textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 28), // Ukuran lebih besar
-              textDirection: TextDirection.rtl, // Teks berarah kanan
-            ),
-             Text(
-              'Latin:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text('Allahumma zid haazal baita ...'),
-            SizedBox(height: 18),
-          ],
         ),
       ),
     );

@@ -6,7 +6,7 @@ class DoaNiatIhramScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Niat Ihram'),
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -1,80 +1,125 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
 import 'naskahmanasik.dart';
 import 'brifingkeberangkatanscreen.dart';
 import 'citytourmadinahscreen.dart';
 import 'citytourmekkahscreen.dart';
-import 'pengenalanlingkunganmasjidscreen.dart';
 
 class NaskahScreen extends StatelessWidget {
+  final List<String> carouselImages = [
+    'assets/images/banner_naskah.jpg',
+    'assets/images/banner_naskah.jpg',
+    'assets/images/banner_naskah.jpg',
+    // Add more image paths as needed
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pilihan Naskah'),
-        backgroundColor: Colors.purple,
-      ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 20),
+      body: Column(
         children: [
-          _buildMenuButton(context, 'Naskah Brifing', Naskahbrifing(), screenWidth),
-          _buildMenuButton(context, 'Naskah City Tour Madinah', NaskahMadinah(), screenWidth),
-          _buildMenuButton(context, 'Naskah City Tour Mekkah', NaskahMekkah(), screenWidth),
-          _buildMenuButton(context, 'Naskah Manasik', NaskahManasik(), screenWidth),
-          _buildMenuButton(context, 'Pengenalan Lingkungan Masjid', NaskahPengenalanLingkunganMasjid(), screenWidth), 
+          SizedBox(height: 20),
+          CarouselSlider(
+            options: CarouselOptions(
+              height: 250.0,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              viewportFraction: 1.0, // Full width for each image
+            ),
+            items: carouselImages.map((imagePath) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Color(0xFFE6E0F8),
+                ),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 20), // Added spacing here
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Naskah Briefing',
+                  style: TextStyle(
+                    color: Colors.purple,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Divider(color: Colors.purple, thickness: 2),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(16),
+              children: [
+                _buildDoaCard(context, 'Briefing Grouping Manasik',
+                    'Belum ada text', NaskahManasik()),
+                _buildDoaCard(context, 'Briefing saat Keberangkatan',
+                    'Belum ada text', Naskahbrifing()),
+                _buildDoaCard(context, 'Bandara Jeddah ke Madinah',
+                    'Belum ada text', NaskahMadinah()),
+                _buildDoaCard(context, 'Bandara Jeddah ke Mekkah',
+                    'Belum ada text', NaskahMekkah()),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildMenuButton(BuildContext context, String title, Widget screen, double screenWidth) {
-    final isLargeScreen = screenWidth > 600;
-    final horizontalPadding = isLargeScreen ? 40.0 : 10.0; // Less padding for smaller screens
-    final buttonWidth = isLargeScreen ? 0.7 * screenWidth : 0.9 * screenWidth; // More width for smaller screens
-
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => screen),
-          );
-        },
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: AnimatedContainer(
-            width: buttonWidth, // Responsive button width
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.purple, Colors.purple],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+  Widget _buildDoaCard(BuildContext context, String title, String description,
+      Widget targetScreen) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => targetScreen,
+          ),
+        );
+      },
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 8),
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/Vector.png',
+                width: 40,
+                height: 40,
               ),
-              borderRadius: BorderRadius.circular(30), // Rounded corners
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  spreadRadius: 3,
-                  blurRadius: 10,
-                  offset: Offset(3, 5),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Text(description, style: TextStyle(fontSize: 16)),
+                  ],
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

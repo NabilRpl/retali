@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Handlingkeberangkatanscreen extends StatefulWidget {
-  const Handlingkeberangkatanscreen({super.key});
+class HandlingKeberangkatanScreen extends StatefulWidget {
+  const HandlingKeberangkatanScreen({super.key});
 
   @override
-  State<Handlingkeberangkatanscreen> createState() => _HandlingjamaahdibussampaihotelscreenState();
+  State<HandlingKeberangkatanScreen> createState() => _HandlingKeberangkatanScreenState();
 }
 
-class _HandlingjamaahdibussampaihotelscreenState extends State<Handlingkeberangkatanscreen> {
+class _HandlingKeberangkatanScreenState extends State<HandlingKeberangkatanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

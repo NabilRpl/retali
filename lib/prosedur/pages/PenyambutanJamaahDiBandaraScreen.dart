@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Penyambutanjamaahdibandarascreen extends StatefulWidget {
-  const Penyambutanjamaahdibandarascreen({super.key});
+class PenyambutanJamaahDiBandaraScreen extends StatefulWidget {
+  const PenyambutanJamaahDiBandaraScreen({super.key});
 
   @override
-  State<Penyambutanjamaahdibandarascreen> createState() => PenyambutanjamaahdibandarascreenState();
+  State<PenyambutanJamaahDiBandaraScreen> createState() => PenyambutanJamaahDiBandaraScreenState();
 }
 
-class PenyambutanjamaahdibandarascreenState extends State<Penyambutanjamaahdibandarascreen> {
+class PenyambutanJamaahDiBandaraScreenState extends State<PenyambutanJamaahDiBandaraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

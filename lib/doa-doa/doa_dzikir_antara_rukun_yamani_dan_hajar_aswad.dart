@@ -6,7 +6,7 @@ class DoaDzikirAntaraRukunYamaniDanHajarAswad extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Doa Antara Rukun Yamani dan Hajar Aswad'),
-        backgroundColor: Colors.purple,
+        backgroundColor:const Color.fromARGB(255, 78, 29, 87),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

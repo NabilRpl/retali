@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:qr_code/scanners/QRScannerOverlay.dart';
-import 'package:qr_code/scanners/found_screen.dart';
+import 'QRscannerOverlay.dart';
+import 'found_screen.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);
@@ -12,7 +12,6 @@ class Scanner extends StatefulWidget {
 
 class _ScannerState extends State<Scanner> {
   MobileScannerController cameraController = MobileScannerController();
-  bool _screenOpened = false;
 
   @override
   void initState() {
@@ -43,23 +42,22 @@ class _ScannerState extends State<Scanner> {
   }
 
   void _foundBarcode(BarcodeCapture barcodeCapture) {
-    if (!_screenOpened) {
-      final String code = barcodeCapture.barcodes.first.rawValue ?? "___";
-      _screenOpened = true; // Prevent further scans until screen is closed
+    final String code = barcodeCapture.barcodes.first.rawValue ?? "___";
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => FoundScreen(
-            value: code,
-            screenClose: _screenWasClosed,
-          ),
+    // Immediately navigate to the FoundScreen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FoundScreen(
+          value: code,
+          screenClose: _screenWasClosed,
+          data: '',
         ),
-      );
-    }
+      ),
+    );
   }
 
   void _screenWasClosed() {
-    _screenOpened = false; // Reset when screen is closed
+    // No need to reset anything here as the scanner can continue
   }
 }

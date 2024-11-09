@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Handlingtibadiindonesiascreen extends StatefulWidget {
-  const Handlingtibadiindonesiascreen({super.key});
+class HandlingTibaDiIndonesiaScreen extends StatefulWidget {
+  const HandlingTibaDiIndonesiaScreen({super.key});
 
   @override
-  State<Handlingtibadiindonesiascreen> createState() => _HandlingtibadiindonesiascreenState();
+  State<HandlingTibaDiIndonesiaScreen> createState() => _HandlingTibaDiIndonesiaScreenState();
 }
 
-class _HandlingtibadiindonesiascreenState extends State<Handlingtibadiindonesiascreen> {
+class _HandlingTibaDiIndonesiaScreenState extends State<HandlingTibaDiIndonesiaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

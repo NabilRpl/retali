@@ -6,7 +6,7 @@ class DoaDzikirSaatMenujuMaqamIbrahimSetelahSelesaiThawaf extends StatelessWidge
     return Scaffold(
       appBar: AppBar(
         title: Text('Doa Menuju Maqam Ibrahim Setelah Thawaf'),
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

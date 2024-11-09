@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../intro/intro_slider.dart'; // Pastikan kamu mengimpor intro_slider
+import '../intro/intro_slider.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
       routes: {
-        '/intro': (context) => IntroSlider(), // Definisikan route untuk intro slider
+        '/intro': (context) => IntroSlider(),
       },
     );
   }
@@ -28,10 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final String correctId = 'nabil';
   final String correctPassword = 'ganteng';
-
-  // Status error untuk ID dan Password
   bool _isError = false;
-
   bool _isSaveLoginChecked = false;
 
   @override
@@ -41,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Action when back button is pressed
+            // Action for back button
           },
         ),
         elevation: 0,
@@ -53,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Mulai menggunakan email',
+              'Login',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -61,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 8),
             Text(
-              'Mulailah menggunakan email. Ada baiknya memberikan alasan yang kuat mengapa alamat email diperlukan.',
+              'Masukkan ID dan kata sandi Anda untuk melanjutkan.',
               style: TextStyle(fontSize: 14),
             ),
             SizedBox(height: 24),
@@ -73,15 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.purple),
                 ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                errorText: _isError ? 'ID atau Password salah' : null,
+                errorText: _isError ? 'ID atau Kata Sandi salah' : null,
               ),
             ),
             SizedBox(height: 16),
@@ -89,20 +78,12 @@ class _LoginPageState extends State<LoginPage> {
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Kata Sandi',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.purple),
                 ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                errorText: _isError ? 'ID atau Password salah' : null,
+                errorText: _isError ? 'ID atau Kata Sandi salah' : null,
               ),
             ),
             SizedBox(height: 16),
@@ -126,19 +107,16 @@ class _LoginPageState extends State<LoginPage> {
                 height: 48,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple, // background color
+                    backgroundColor: Colors.purple,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   onPressed: () {
-                    // Verifikasi ID dan Password
                     setState(() {
                       if (_idController.text == correctId &&
                           _passwordController.text == correctPassword) {
                         _isError = false;
-
-                        // Ganti SuccessScreen dengan navigasi ke IntroSlider
                         Navigator.pushReplacementNamed(context, '/intro');
                       } else {
                         _isError = true;

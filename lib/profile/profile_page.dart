@@ -1,7 +1,62 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'edit_profile.dart';
+import 'photo_konten.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  final File? imageFile;
+
+  const ProfilePage({Key? key, this.imageFile}) : super(key: key);
+  
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String? _imagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadImagePath(); // Load saved image path on initialization
+  }
+
+  // Method to pick an image and save its path
+  Future<void> _selectImage() async {
+  final ImagePicker picker = ImagePicker();
+  final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  if (pickedFile != null) {
+    setState(() {
+      _imagePath = pickedFile.path;
+    });
+    _saveImagePath(_imagePath!);
+
+    // Navigate to the new page with image and content
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PhotoKonten(imagePath: _imagePath!),
+      ),
+    );
+  }
+}
+
+  // Save image path to shared preferences
+  Future<void> _saveImagePath(String path) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('profile_image_path', path);
+  }
+
+  // Load image path from shared preferences
+  Future<void> _loadImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _imagePath = prefs.getString('profile_image_path');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,21 +68,31 @@ class ProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 16.0),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: Colors.grey.shade300,
-                    width: 1.0,
+              GestureDetector(
+                onTap: _selectImage, // Opens image picker
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(
+                      color: Colors.grey.shade300,
+                      width: 1.0,
+                    ),
                   ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'assets/images/al-madinah.jpg', // Replace with your image
-                    height: 150.0,
-                    width: 150.0,
-                    fit: BoxFit.cover,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: _imagePath == null
+                        ? Image.asset(
+                            'assets/images/al-madinah.jpg', // Default image
+                            height: 150.0,
+                            width: 150.0,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(_imagePath!), // Display saved image
+                            height: 150.0,
+                            width: 150.0,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),
@@ -38,12 +103,6 @@ class ProfilePage extends StatelessWidget {
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Add your logout logic here
-                },
-                child: const Text('Log Out'),
               ),
               const SizedBox(height: 32.0),
               const ProfileInfoTile(
@@ -72,11 +131,15 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(height: 32.0),
               ElevatedButton(
                 onPressed: () {
-                  // Add your edit logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditProfile()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.purple,
-                  padding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 48.0, vertical: 16.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),

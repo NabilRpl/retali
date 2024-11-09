@@ -1,115 +1,163 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code/prosedur/pages/HandlingTibaDiIndonesiaScreen.dart';
-import 'package:qr_code/prosedur/pages/KepulanganJamaahScreen.dart';
-import 'package:qr_code/prosedur/pages/PengantaranJamaahKeRaudhahScreen.dart';
-import 'package:qr_code/prosedur/pages/PenyambutanJamaahDiBandaraScreen.dart';
-import 'package:qr_code/prosedur/pages/PersiapanDanPelaksanaanUmrohScreen.dart';
-import 'package:qr_code/prosedur/pages/HandlingKeberangkatanScreen.dart';
-import 'package:qr_code/prosedur/pages/HandlingKetibaanScreen.dart';
-import 'package:qr_code/prosedur/pages/HandlingJamaahDiBusSampaiHotelScreen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class ProsedurScreen extends StatefulWidget {
-  const ProsedurScreen({Key? key}) : super(key: key);
+import 'pages/HandlingJamaahDiBusSampaiHotelScreen.dart';
+import 'pages/HandlingKeberangkatanScreen.dart';
+import 'pages/HandlingKetibaanScreen.dart';
+import 'pages/HandlingTibaDiIndonesiaScreen.dart';
+import 'pages/KepulanganJamaahScreen.dart';
+import 'pages/PengantaranJamaahKeRaudhahScreen.dart';
+import 'pages/PenyambutanJamaahDiBandaraScreen.dart';
+import 'pages/PersiapanDanPelaksanaanUmrohScreen.dart';
+// Import other screens as before
 
-  @override
-  State<ProsedurScreen> createState() => _ProsedurScreenState();
-}
-
-class _ProsedurScreenState extends State<ProsedurScreen> {
-  List<String> prosedurCategories = [
-    'Handling Keberangkatan',
-    'Handling Ketibaan',
-    'Handling Tiba Di Indonesia',
-    'Handling Jamaah Di Bus Sampai Hotel',
-    'Kepulangan Jamaah',
-    'Pengantaran Jamaah Ke Raudhah',
-    'Penyambutan Jamaah Di Bandara',
-    'Persiapan Dan Pelaksanaan Umroh',
+class ProsedurScreen extends StatelessWidget {
+  final List<String> carouselImages = [
+    'assets/images/banner_prosedur.jpg',
+    'assets/images/banner_prosedur.jpg',
+    'assets/images/banner_prosedur.jpg',
+    // Add more image paths as needed
   ];
-
-  List<bool> isExpandedList = List.filled(8, false);
-
-  void navigateToScreen(String category) {
-    Widget screen;
-    switch (category) {
-      case 'Handling Keberangkatan':
-        screen = const Handlingkeberangkatanscreen();
-        break;
-      case 'Handling Ketibaan':
-        screen = const HandlingKetibaanScreen();
-        break;
-      case 'Handling Tiba Di Indonesia':
-        screen = const Handlingtibadiindonesiascreen();
-        break;
-      case 'Handling Jamaah Di Bus Sampai Hotel':
-        screen = const Handlingjamaahdibussampaihotelscreen();
-        break;
-      case 'Kepulangan Jamaah':
-        screen = const Kepulanganjamaahscreen();
-        break;
-      case 'Pengantaran Jamaah Ke Raudhah':
-        screen = const Pengantaranjamaahkeraudhahscreen();
-        break;
-      case 'Penyambutan Jamaah Di Bandara':
-        screen = const Penyambutanjamaahdibandarascreen();
-        break;
-      case 'Persiapan Dan Pelaksanaan Umroh':
-        screen = const Persiapandanpelaksanaanumrohscreen();
-        break;
-      default:
-        screen = const Scaffold(
-          body: Center(child: Text('Screen not found')),
-        );
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => screen),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Prosedur'),
-      ),
-      body: ListView.builder(
-        itemCount: prosedurCategories.length,
-        itemBuilder: (context, index) {
-          return ExpansionPanelList(
-            expansionCallback: (int panelIndex, bool isExpanded) {
-              setState(() {
-                isExpandedList[index] = !isExpanded;
-              });
-            },
-            children: [
-              ExpansionPanel(
-                headerBuilder: (BuildContext context, bool isExpanded) {
-                  return ListTile(
-                    title: Text(
-                      prosedurCategories[index],
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    onTap: () {
-                      navigateToScreen(prosedurCategories[index]);
-                    },
-                  );
-                },
-                body: GestureDetector(
-                  onTap: () {
-                    navigateToScreen(prosedurCategories[index]);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text('Klik untuk melihat lebih lanjut tentang ${prosedurCategories[index]}'),
+      body: Column(
+        children: [
+          SizedBox(height: 20),
+          CarouselSlider(
+            options: CarouselOptions(
+              height: 250.0,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              viewportFraction: 1.0, // Use full width for each image
+            ),
+            items: carouselImages.map((imagePath) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Color(0xFFE6E0F8),
+                ),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 16), // Add spacing here
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Prosedur',
+                  style: TextStyle(
+                    color: Colors.purple,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                isExpanded: isExpandedList[index],
+                Divider(color: Colors.purple, thickness: 2),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(16),
+              children: [
+                _buildDoaCard(
+                    context,
+                    'Handling Keberangkatan',
+                    'Belum ada text',
+                    HandlingKeberangkatanScreen()),
+                _buildDoaCard(
+                    context,
+                    'Handling Ketibaan',
+                    'Belum ada text',
+                    HandlingKetibaanScreen()),
+                _buildDoaCard(
+                    context,
+                    'Handling tiba di Indonesia',
+                    'Belum ada text',
+                    HandlingTibaDiIndonesiaScreen()),
+                _buildDoaCard(
+                    context,
+                    'Handling Jamaah di bus sampai hotel',
+                    'Belum ada text', 
+                    HandlingJamaahDiBusSampaiHotelScreen()),
+                _buildDoaCard(
+                    context,
+                    'Kepulangan Jamaah',
+                    'Belum ada text',
+                    KepulanganJamaahScreen()),
+                _buildDoaCard(
+                    context,
+                    'Pengantaran Jamaah ke Raudhah',
+                    'Belum ada text',
+                    PengantaranJamaahKeRaudhahScreen()), // Corrected capitalization
+                _buildDoaCard(
+                    context,
+                    'Penyambutan Jamaah di Bandara',
+                    'Belum ada text',
+                    PenyambutanJamaahDiBandaraScreen()), // Corrected capitalization
+                _buildDoaCard(
+                    context,
+                    'Persiapan dan Pelaksanaan Umroh',
+                    'Belum ada text',
+                    PersiapanDanPelaksanaanUmrohScreen()), // Corrected capitalization
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDoaCard(BuildContext context, String title, String description,
+      Widget targetScreen) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => targetScreen,
+          ),
+        );
+      },
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 8),
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/Vector.png',
+                width: 40,
+                height: 40,
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Text(description, style: TextStyle(fontSize: 16)),
+                  ],
+                ),
               ),
             ],
-          );
-        },
+          ),
+        ),
       ),
     );
   }

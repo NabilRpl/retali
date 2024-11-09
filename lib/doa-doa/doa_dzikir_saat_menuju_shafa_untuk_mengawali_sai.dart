@@ -6,7 +6,7 @@ class DoaDzikirSaatMenujuShafaUntukMengawaliSai extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Doa Saat Menuju Shafa untuk Mengawali Sa’i'),
-        backgroundColor: Colors.purple,
+        backgroundColor:const Color.fromARGB(255, 78, 29, 87),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

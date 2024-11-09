@@ -1,26 +1,31 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code/main.dart';
+import 'package:qr_code/potensi-masalah/masalah_cuaca.dart';
+import 'package:qr_code/potensi-masalah/masalah_keamanan.dart';
+import 'package:qr_code/potensi-masalah/masalah_komunikasi.dart';
+import 'package:qr_code/potensi-masalah/masalah_psikologis.dart';
+import 'package:qr_code/potensi-masalah/masalah_teknologi.dart';
+import 'package:qr_code/potensi-masalah/masalah_transportasi.dart';
+import 'package:qr_code/scanners/found_screen.dart';
+import '../ceklis/ceklis_screen.dart';
 import '../doa-doa/doa_doa_screen.dart';
 import '../bimbingan-ibadah/bimbingan_ibadah_screen.dart';
 import '../maps/pages/google_map_page.dart';
 import '../naskah/naskah_screen.dart';
 import '../potensi-masalah/masalah_administratif.dart';
-import '../potensi-masalah/masalah_cuaca.dart';
 import '../potensi-masalah/masalah_hotel.dart';
 import '../potensi-masalah/masalah_ibadah.dart';
-import '../potensi-masalah/masalah_keamanan.dart';
 import '../potensi-masalah/masalah_kesehatan.dart';
-import '../potensi-masalah/masalah_komunikasi.dart';
 import '../potensi-masalah/masalah_logistik.dart';
-import '../potensi-masalah/masalah_psikologis.dart';
-import '../potensi-masalah/masalah_teknologi.dart';
-import '../potensi-masalah/masalah_transportasi.dart';
 import '../prosedur/prosedur_screen.dart';
 import 'package:qr_code/agenda/agenda_page.dart';
 import 'package:qr_code/profile/profile_page.dart';
 import '../scanners/scanner.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../tugas/tugas_screen.dart';
+import 'camera_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,7 +52,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  get item => null;
+  final List<String> imgList = [
+      'assets/images/banner_leader.jpg',
+      'assets/images/banner_doa.jpg',
+      'assets/images/banner_konten.jpg',
+      'assets/images/banner_lokasi.jpg',
+      'assets/images/banner_prosedur.jpg',
+      'assets/images/banner_sejarah.jpg',
+      'assets/images/bimbingan_ibadah.jpeg',
+    ];
 
   Future<void> _uploadImage() async {
     final picker = ImagePicker();
@@ -62,32 +75,40 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _selectedIndex == 0 ? _buildHomeContent(context) : ProfilePage(),
-      floatingActionButton: _buildFloatingButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNavBar(),
-    );
-  }
+ @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: _buildAppBar(),
+    body: _selectedIndex == 0 
+        ? _buildHomeContent(context) 
+        : const ProfilePage(imageFile: null,), // Call ProfilePage without `imageFile` parameter
+    floatingActionButton: _buildFloatingButton(context),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    bottomNavigationBar: _buildBottomNavBar(),
+  );
+}
 
   AppBar _buildAppBar() {
     if (_selectedIndex == 0) {
       return AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        automaticallyImplyLeading: false, // Hides the back button
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Hei Ery',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold)),
-            Text('Welcome to Retali',
-                style: TextStyle(color: Colors.grey, fontSize: 14)),
+            Text(
+              'Hei Ery',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Welcome to Retali',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
           ],
         ),
       );
@@ -95,12 +116,15 @@ class _HomePageState extends State<HomePage> {
       return AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text('Profile',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            )),
+        automaticallyImplyLeading: false, // Hides the back button
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
       );
     }
@@ -118,16 +142,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCarouselSlider() {
-    final List<String> imgList = [
-      'assets/images/banner_leader.jpg',
-      'assets/images/banner_doa.jpg',
-      'assets/images/banner_konten.jpg',
-      'assets/images/banner_lokasi.jpg',
-      'assets/images/banner_prosedur.jpg',
-      'assets/images/banner_sejarah.jpg',
-      'assets/images/bimbingan_ibadah.jpeg',
-    ];
-
     return Padding(
       padding: const EdgeInsets.only(top: 20.0), // Adjust the top padding here
       child: CarouselSlider.builder(
@@ -135,35 +149,34 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index, realIdx) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              imgList[index],
-              fit: BoxFit.cover,
-              width: 1000,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey,
-                  child: Center(
-                    child: Text(
-                      'Image not found',
-                      style: TextStyle(color: Colors.white),
+            child: FittedBox(
+              fit: BoxFit.contain, // Ensures the full image is displayed
+              child: Image.asset(
+                imgList[index],
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: Text(
+                        'Image not found',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           );
         },
         options: CarouselOptions(
           autoPlay: true,
           enlargeCenterPage: true,
-          viewportFraction: 1.0, // Full width of the image
-          aspectRatio: 16 / 9, // Adjust based on image dimensions
-          initialPage: 0,
+          viewportFraction: 1.0,
+          height: 300, // Adjust height as needed
           autoPlayInterval: Duration(seconds: 3),
           autoPlayAnimationDuration: Duration(milliseconds: 800),
           autoPlayCurve: Curves.fastOutSlowIn,
           pauseAutoPlayOnTouch: true,
-          height: 180, // Adjusted height for better fit
         ),
       ),
     );
@@ -176,11 +189,11 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: const Color.fromARGB(255, 255, 255, 255),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
-              spreadRadius: 1,
+              spreadRadius: 2,
               blurRadius: 3,
               offset: Offset(0, 3),
             ),
@@ -201,273 +214,224 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildIconGrid(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Wrap(
-        spacing: 15,
-        runSpacing: 15,
-        alignment: WrapAlignment.spaceEvenly,
-        children: <Widget>[
-          _iconWithText(Icons.menu_book, 'Doa-doa', context),
-          _iconWithText(Icons.school, 'Bimbingan\nIbadah', context),
-          _iconWithText(Icons.description, 'Naskah', context),
-          _iconWithText(Icons.rule, 'Prosedur', context),
-          _iconWithText(Icons.event, 'Agenda', context),
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: Column(
+        children: [
+          // Top row of icons
+          Wrap(
+            spacing: 35,
+            runSpacing: 35,
+            alignment: WrapAlignment.spaceEvenly,
+            children: <Widget>[
+              _iconWithText(Icons.menu_book, 'Doa-doa', context),
+              _iconWithText(Icons.school, 'Bimbingan\nIbadah', context),
+              _iconWithText(Icons.description, 'Naskah Briefing', context),
+            ],
+          ),
+          SizedBox(height: 20), // Add some space between rows
+          // Bottom row of icons
+          Wrap(
+            spacing: 35,
+            runSpacing: 35,
+            alignment: WrapAlignment.spaceEvenly,
+            children: <Widget>[
+              _iconWithText(Icons.event, 'Agenda', context),
+              _iconWithText(Icons.rule, 'Prosedur', context),
+              _iconWithText(Icons.library_books_rounded, 'Tugas', context),
+              _iconWithText(
+                  Icons.playlist_add_check_circle_sharp, 'Ceklis', context),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildListView() {
-    // Daftar potensi masalah dengan gambar dan judul
-    final List<Map<String, String>> potensiMasalahList = [
-      {
-        "title": "Masalah Kesehatan",
-        "image": "assets/images/masalah_kesehatan.jpg"
-      },
-      {
-        "title": "Masalah Logistik",
-        "image": "assets/images/masalah_logistik.jpg"
-      },
-      {"title": "Masalah Ibadah", "image": "assets/images/masalah_ibadah.jpg"},
-      {
-        "title": "Masalah Keamanan",
-        "image": "assets/images/masalah_keamanan.jpg"
-      },
-      {
-        "title": "Masalah Administratif",
-        "image": "assets/images/masalah_administratif.jpg"
-      },
-      {"title": "Masalah Hotel", "image": "assets/images/masalah_hotel.jpg"},
-      {
-        "title": "Masalah Transportasi",
-        "image": "assets/images/masalah_transportasi.jpg"
-      },
-      {
-        "title": "Masalah Komunikasi",
-        "image": "assets/images/masalah_komunikasi.jpg"
-      },
-      {
-        "title": "Masalah Psikologis",
-        "image": "assets/images/masalah_psikologis.jpg"
-      },
-      {"title": "Masalah Cuaca", "image": "assets/images/masalah_cuaca.jpg"},
-      {
-        "title": "Masalah Teknologi",
-        "image": "assets/images/masalah_teknologi.jpg"
-      },
-      {
-        "title": "Masalah Lainnya",
-        "image": "assets/images/masalah_lainnya.jpg"
-      },
-    ];
+ Widget _buildListView() {
+  final List<String> potensiMasalahImages = [
+    "assets/images/masalah_kesehatan.jpg",
+    "assets/images/masalah_logistik.jpg",
+    "assets/images/masalah_ibadah.jpg",
+    "assets/images/masalah_keamanan.jpg",
+    "assets/images/masalah_administratif.jpg",
+    "assets/images/masalah_hotel.jpg",
+    "assets/images/masalah_transportasi.jpg",
+    "assets/images/masalah_komunikasi.jpg",
+    "assets/images/masalah_psikologis.jpg",
+    "assets/images/masalah_cuaca.jpg",
+    "assets/images/masalah_teknologi.jpg",
+    "assets/images/masalah_lainnya.jpg",
+  ];
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: potensiMasalahList.length,
+  return SizedBox(
+    height: 80,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: potensiMasalahImages.length,
       itemBuilder: (context, index) {
-        final item = potensiMasalahList[index];
-        final title = item["title"] ?? "Unknown";
-        final imagePath = item["image"] ?? "assets/default.png";
+        final imagePath = potensiMasalahImages[index];
 
-        return InkWell(
-          onTap: () {
-            // Logika navigasi berdasarkan judul item
-            if (title == "Masalah Kesehatan") {
+        return Container(
+          margin: EdgeInsets.symmetric(horizontal: 4),
+          width: 440,
+          child: InkWell(
+            onTap: () {
+              Widget destinationPage;
+              switch (index) {
+                case 0:
+                  destinationPage = MasalahKesehatan();
+                  break;
+                case 1:
+                  destinationPage = MasalahLogistik();
+                  break;
+                case 2:
+                  destinationPage = MasalahIbadah();
+                  break;
+                case 3:
+                  destinationPage = MasalahKeamanan();
+                  break;
+                case 4:
+                  destinationPage = MasalahAdministratif();
+                  break;
+                case 5:
+                  destinationPage = MasalahHotel();
+                  break;
+                case 6:
+                  destinationPage = MasalahTransportasi();
+                  break;
+                case 7:
+                  destinationPage = MasalahKomunikasi();
+                  break;
+                case 8:
+                  destinationPage = MasalahPsikologis();
+                  break;
+                case 9:
+                  destinationPage = MasalahCuaca();
+                  break;
+                case 10:
+                  destinationPage = MasalahTeknologi();
+                  break;
+                case 11:
+                  destinationPage = GoogleMapPage();
+                  break;
+                default:
+                  destinationPage = MasalahKesehatan();
+              }
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MasalahKesehatan()),
+                MaterialPageRoute(builder: (context) => destinationPage),
               );
-            } else if (title == "Masalah Logistik") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahLogistik()),
-              );
-            } else if (title == "Masalah Ibadah") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahIbadah()),
-              );
-            } else if (title == "Masalah Keamanan") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahKeamanan()),
-              );
-            } else if (title == "Masalah Administratif") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahAdministratif()),
-              );
-            } else if (title == "Masalah Hotel") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahHotel()),
-              );
-            } else if (title == "Masalah Transportasi") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahTransportasi()),
-              );
-            } else if (title == "Masalah Komunikasi") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahKomunikasi()),
-              );
-            } else if (title == "Masalah Psikologis") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahPsikologis()),
-              );
-            } else if (title == "Masalah Cuaca") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahCuaca()),
-              );
-            } else if (title == "Masalah Teknologi") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MasalahTeknologi()),
-              );
-            } else if (title == "Masalah Lainnya") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => GoogleMapPage()),
-              );
-            } else {
-              // Fallback dialog for unknown items
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("Detail Potensi Masalah"),
-                    content: Text("Informasi tentang $title"),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text("Tutup"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
-          },
-          child: Container(
-            margin: EdgeInsets.only(bottom: 10),
-            padding: EdgeInsets.all(8),
-            height: 90,
-            decoration: BoxDecoration(
-              color: Color(0xFFE6E0F8),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Row(
-              children: [
-                // Displaying the image with a 4:3 aspect ratio
-                AspectRatio(
-                  aspectRatio: 4 / 3,
-                  child: Image.asset(
-                    imagePath,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                SizedBox(width: 10),
-                // Displaying the title
-                Expanded(
-                  child: Text(
-                    title,
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                ),
-              ],
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         );
       },
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildFloatingButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Scanner()),
+          MaterialPageRoute(builder: (context) => FoundScreen(value: '', screenClose: () {  }, data: '',)),
         );
       },
       child: Icon(Icons.qr_code, color: Colors.white),
-      backgroundColor: Colors.purple,
+      backgroundColor:const Color.fromARGB(255, 78, 29, 87),
       shape: CircleBorder(),
       elevation: 6.0,
     );
   }
 
   Widget _buildBottomNavBar() {
-    return BottomAppBar(
-      shape: CircularNotchedRectangle(),
-      notchMargin: 8.0,
-      color: const Color.fromARGB(255, 1, 111, 161),
-      child: Container(
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.home,
-                color: _selectedIndex == 0
-                    ? Colors.white
-                    : const Color.fromARGB(255, 0, 0, 0),
-              ),
-              onPressed: () {
-                setState(() {
-                  _selectedIndex = 0;
-                });
-              },
+  return BottomAppBar(
+    shape: CircularNotchedRectangle(),
+    notchMargin: 8.0,
+    color: const Color.fromARGB(255, 78, 29, 87),
+    child: Container(
+      height: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.home,
+              color: _selectedIndex == 0
+                  ? Colors.white
+                  : const Color.fromARGB(255, 0, 0, 0),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.camera_alt,
-                color: _selectedIndex == 2
-                     ? Colors.white
-                     : const Color.fromARGB(255, 0, 0, 0),
-              ),
-              onPressed: _uploadImage,
+            onPressed: () {
+              setState(() {
+                _selectedIndex = 0;
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.camera_alt,
+              color: _selectedIndex == 2
+                  ? Colors.white
+                  : const Color.fromARGB(255, 0, 0, 0),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.location_on,
-                color: _selectedIndex == 2
-                    ? Colors.white
-                    : const Color.fromARGB(255, 0, 0, 0),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RoleSelectionPage()),
-                );
-              },
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CameraPage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.location_on,
+              color: _selectedIndex == 2
+                  ? Colors.white
+                  : const Color.fromARGB(255, 0, 0, 0),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.person,
-                color: _selectedIndex == 1
-                    ? Colors.white
-                    : const Color.fromARGB(255, 0, 0, 0),
-              ),
-              onPressed: () {
-                setState(() {
-                  _selectedIndex = 1;
-                });
-              },
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RoleSelectionPage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.person,
+              color: _selectedIndex == 1
+                  ? Colors.white
+                  : const Color.fromARGB(255, 0, 0, 0),
             ),
-          ],
-        ),
+            onPressed: () {
+              setState(() {
+                _selectedIndex = 1;
+              });
+            },
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _iconWithText(IconData icon, String label, BuildContext context) {
+    double iconSize = (label == 'Doa-doa' ||
+            label == 'Bimbingan\nIbadah' ||
+            label == 'Naskah Briefing' ||
+            label == 'Prosedur' ||
+            label == 'Agenda' ||
+            label == 'Tugas' ||
+            label == 'Ceklis')
+        ? 40
+        : 16;
+
     return GestureDetector(
       onTap: () {
         if (label == 'Doa-doa') {
@@ -480,7 +444,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(builder: (context) => BimbinganIbadahScreen()),
           );
-        } else if (label == 'Naskah') {
+        } else if (label == 'Naskah Briefing') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => NaskahScreen()),
@@ -495,6 +459,16 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(builder: (context) => AgendaPage()),
           );
+        } else if (label == 'Tugas') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TugasScreen()),
+          );
+        } else if (label == 'Ceklis') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CeklisScreen()),
+          );
         }
       },
       child: Column(
@@ -506,7 +480,8 @@ class _HomePageState extends State<HomePage> {
               color: Color(0xFFE6E0F8),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, size: 24, color: Colors.purple),
+            child: Icon(icon,
+                size: iconSize, color: const Color.fromARGB(255, 78, 29, 87),), // Modified icon size
           ),
           SizedBox(height: 4),
           Text(

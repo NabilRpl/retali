@@ -94,7 +94,7 @@ class _MasalahLogistikState extends State<MasalahLogistik> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.deepPurple[700],
+                      color:const Color.fromARGB(255, 78, 29, 87),
                     ),
                   ),
                   const SizedBox(height: 8),
