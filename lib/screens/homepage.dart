@@ -23,6 +23,7 @@ import 'package:qr_code/agenda/agenda_page.dart';
 import 'package:qr_code/profile/profile_page.dart';
 import '../scanners/scanner.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../tugas/tugas_screen.dart';
 import 'camera_page.dart';
@@ -53,14 +54,14 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final List<String> imgList = [
-      'assets/images/banner_leader.jpg',
-      'assets/images/banner_doa.jpg',
-      'assets/images/banner_konten.jpg',
-      'assets/images/banner_lokasi.jpg',
-      'assets/images/banner_prosedur.jpg',
-      'assets/images/banner_sejarah.jpg',
-      'assets/images/bimbingan_ibadah.jpeg',
-    ];
+    'assets/images/banner_leader.jpg',
+    'assets/images/banner_doa.jpg',
+    'assets/images/banner_konten.jpg',
+    'assets/images/banner_lokasi.jpg',
+    'assets/images/banner_prosedur.jpg',
+    'assets/images/banner_sejarah.jpg',
+    'assets/images/bimbingan_ibadah.jpeg',
+  ];
 
   Future<void> _uploadImage() async {
     final picker = ImagePicker();
@@ -75,18 +76,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
- @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: _buildAppBar(),
-    body: _selectedIndex == 0 
-        ? _buildHomeContent(context) 
-        : const ProfilePage(imageFile: null,), // Call ProfilePage without `imageFile` parameter
-    floatingActionButton: _buildFloatingButton(context),
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    bottomNavigationBar: _buildBottomNavBar(),
-  );
-}
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _selectedIndex == 0
+          ? _buildHomeContent(context)
+          : const ProfilePage(
+              imageFile: null,
+            ), // Call ProfilePage without `imageFile` parameter
+      floatingActionButton: _buildFloatingButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomNavBar(),
+    );
+  }
 
   AppBar _buildAppBar() {
     if (_selectedIndex == 0) {
@@ -97,17 +100,37 @@ Widget build(BuildContext context) {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Hei Ery',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            FutureBuilder<String>(
+              future: SharedPreferences.getInstance()
+                  .then((prefs) => prefs.getString('Username') ?? 'User'),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text(
+                    'Loading...',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                } else {
+                  return Text(
+                    'Hei ${snapshot.data}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }
+              },
             ),
             Text(
               'Welcome to Retali',
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
             ),
           ],
         ),
@@ -247,179 +270,184 @@ Widget build(BuildContext context) {
     );
   }
 
- Widget _buildListView() {
-  final List<String> potensiMasalahImages = [
-    "assets/images/masalah_kesehatan.jpg",
-    "assets/images/masalah_logistik.jpg",
-    "assets/images/masalah_ibadah.jpg",
-    "assets/images/masalah_keamanan.jpg",
-    "assets/images/masalah_administratif.jpg",
-    "assets/images/masalah_hotel.jpg",
-    "assets/images/masalah_transportasi.jpg",
-    "assets/images/masalah_komunikasi.jpg",
-    "assets/images/masalah_psikologis.jpg",
-    "assets/images/masalah_cuaca.jpg",
-    "assets/images/masalah_teknologi.jpg",
-    "assets/images/masalah_lainnya.jpg",
-  ];
+  Widget _buildListView() {
+    final List<String> potensiMasalahImages = [
+      "assets/images/masalah_kesehatan.jpg",
+      "assets/images/masalah_logistik.jpg",
+      "assets/images/masalah_ibadah.jpg",
+      "assets/images/masalah_keamanan.jpg",
+      "assets/images/masalah_administratif.jpg",
+      "assets/images/masalah_hotel.jpg",
+      "assets/images/masalah_transportasi.jpg",
+      "assets/images/masalah_komunikasi.jpg",
+      "assets/images/masalah_psikologis.jpg",
+      "assets/images/masalah_cuaca.jpg",
+      "assets/images/masalah_teknologi.jpg",
+      "assets/images/masalah_lainnya.jpg",
+    ];
 
-  return SizedBox(
-    height: 80,
-    child: ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: potensiMasalahImages.length,
-      itemBuilder: (context, index) {
-        final imagePath = potensiMasalahImages[index];
+    return SizedBox(
+      height: 80,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: potensiMasalahImages.length,
+        itemBuilder: (context, index) {
+          final imagePath = potensiMasalahImages[index];
 
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: 4),
-          width: 440,
-          child: InkWell(
-            onTap: () {
-              Widget destinationPage;
-              switch (index) {
-                case 0:
-                  destinationPage = MasalahKesehatan();
-                  break;
-                case 1:
-                  destinationPage = MasalahLogistik();
-                  break;
-                case 2:
-                  destinationPage = MasalahIbadah();
-                  break;
-                case 3:
-                  destinationPage = MasalahKeamanan();
-                  break;
-                case 4:
-                  destinationPage = MasalahAdministratif();
-                  break;
-                case 5:
-                  destinationPage = MasalahHotel();
-                  break;
-                case 6:
-                  destinationPage = MasalahTransportasi();
-                  break;
-                case 7:
-                  destinationPage = MasalahKomunikasi();
-                  break;
-                case 8:
-                  destinationPage = MasalahPsikologis();
-                  break;
-                case 9:
-                  destinationPage = MasalahCuaca();
-                  break;
-                case 10:
-                  destinationPage = MasalahTeknologi();
-                  break;
-                case 11:
-                  destinationPage = GoogleMapPage();
-                  break;
-                default:
-                  destinationPage = MasalahKesehatan();
-              }
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => destinationPage),
-              );
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: 4),
+            width: 440,
+            child: InkWell(
+              onTap: () {
+                Widget destinationPage;
+                switch (index) {
+                  case 0:
+                    destinationPage = MasalahKesehatan();
+                    break;
+                  case 1:
+                    destinationPage = MasalahLogistik();
+                    break;
+                  case 2:
+                    destinationPage = MasalahIbadah();
+                    break;
+                  case 3:
+                    destinationPage = MasalahKeamanan();
+                    break;
+                  case 4:
+                    destinationPage = MasalahAdministratif();
+                    break;
+                  case 5:
+                    destinationPage = MasalahHotel();
+                    break;
+                  case 6:
+                    destinationPage = MasalahTransportasi();
+                    break;
+                  case 7:
+                    destinationPage = MasalahKomunikasi();
+                    break;
+                  case 8:
+                    destinationPage = MasalahPsikologis();
+                    break;
+                  case 9:
+                    destinationPage = MasalahCuaca();
+                    break;
+                  case 10:
+                    destinationPage = MasalahTeknologi();
+                    break;
+                  case 11:
+                    destinationPage = GoogleMapPage();
+                    break;
+                  default:
+                    destinationPage = MasalahKesehatan();
+                }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => destinationPage),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-        );
-      },
-    ),
-  );
-}
+          );
+        },
+      ),
+    );
+  }
 
   Widget _buildFloatingButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FoundScreen(value: '', screenClose: () {  }, data: '',)),
+          MaterialPageRoute(
+              builder: (context) => FoundScreen(
+                    value: '',
+                    screenClose: () {},
+                    data: '',
+                  )),
         );
       },
       child: Icon(Icons.qr_code, color: Colors.white),
-      backgroundColor:const Color.fromARGB(255, 78, 29, 87),
+      backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       shape: CircleBorder(),
       elevation: 6.0,
     );
   }
 
   Widget _buildBottomNavBar() {
-  return BottomAppBar(
-    shape: CircularNotchedRectangle(),
-    notchMargin: 8.0,
-    color: const Color.fromARGB(255, 78, 29, 87),
-    child: Container(
-      height: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.home,
-              color: _selectedIndex == 0
-                  ? Colors.white
-                  : const Color.fromARGB(255, 0, 0, 0),
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      notchMargin: 8.0,
+      color: const Color.fromARGB(255, 78, 29, 87),
+      child: Container(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.home,
+                color: _selectedIndex == 0
+                    ? Colors.white
+                    : const Color.fromARGB(255, 0, 0, 0),
+              ),
+              onPressed: () {
+                setState(() {
+                  _selectedIndex = 0;
+                });
+              },
             ),
-            onPressed: () {
-              setState(() {
-                _selectedIndex = 0;
-              });
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.camera_alt,
-              color: _selectedIndex == 2
-                  ? Colors.white
-                  : const Color.fromARGB(255, 0, 0, 0),
+            IconButton(
+              icon: Icon(
+                Icons.camera_alt,
+                color: _selectedIndex == 2
+                    ? Colors.white
+                    : const Color.fromARGB(255, 0, 0, 0),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CameraPage()),
+                );
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CameraPage()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.location_on,
-              color: _selectedIndex == 2
-                  ? Colors.white
-                  : const Color.fromARGB(255, 0, 0, 0),
+            IconButton(
+              icon: Icon(
+                Icons.location_on,
+                color: _selectedIndex == 2
+                    ? Colors.white
+                    : const Color.fromARGB(255, 0, 0, 0),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RoleSelectionPage()),
+                );
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RoleSelectionPage()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.person,
-              color: _selectedIndex == 1
-                  ? Colors.white
-                  : const Color.fromARGB(255, 0, 0, 0),
+            IconButton(
+              icon: Icon(
+                Icons.person,
+                color: _selectedIndex == 1
+                    ? Colors.white
+                    : const Color.fromARGB(255, 0, 0, 0),
+              ),
+              onPressed: () {
+                setState(() {
+                  _selectedIndex = 1;
+                });
+              },
             ),
-            onPressed: () {
-              setState(() {
-                _selectedIndex = 1;
-              });
-            },
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _iconWithText(IconData icon, String label, BuildContext context) {
     double iconSize = (label == 'Doa-doa' ||
@@ -480,8 +508,11 @@ Widget build(BuildContext context) {
               color: Color(0xFFE6E0F8),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon,
-                size: iconSize, color: const Color.fromARGB(255, 78, 29, 87),), // Modified icon size
+            child: Icon(
+              icon,
+              size: iconSize,
+              color: const Color.fromARGB(255, 78, 29, 87),
+            ), // Modified icon size
           ),
           SizedBox(height: 4),
           Text(

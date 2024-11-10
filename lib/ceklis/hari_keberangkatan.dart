@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:qr_code/services/logout.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HariKeberangkatan extends StatefulWidget {
   @override
@@ -10,7 +12,8 @@ class HariKeberangkatan extends StatefulWidget {
 class _HariKeberangkatanState extends State<HariKeberangkatan> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController namaPetugasController = TextEditingController();
-  final TextEditingController kloterKeberangkatanController = TextEditingController();
+  final TextEditingController kloterKeberangkatanController =
+      TextEditingController();
   final List<String> taskDescriptions = [
     '1.Mengingatkan Jamaah tentang Jadwal Kumpul Keberangkatan',
     '2.Petugas datang 1 jam lebih awal dari Waktu yang telah ditentukan',
@@ -33,25 +36,70 @@ class _HariKeberangkatanState extends State<HariKeberangkatan> {
 
   // Create a list to store the selected options for each task
   List<int?> selectedOptions = List<int?>.filled(17, null);
-  
+  List<Map<String, dynamic>> kloterList = [];
+  int? selectedKloterId; // Store selected kloter ID
+
+  @override
+  void initState() {
+    super.initState();
+    fetchKloterData(); // Load kloter data on initialization
+  }
+
+  Future<void> fetchKloterData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token');
+    final url = Uri.parse(
+        "http://127.0.0.1:1810/api/kloter"); // Adjust to your endpoint
+
+    try {
+      final response = await http.get(url, headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        setState(() {
+          kloterList = data
+              .map((item) => {"id": item['id'], "nama": item['nama']})
+              .toList();
+        });
+      } else if (response.statusCode == 401) {
+        await logout(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Gagal mengambil data kloter")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
+  }
+
   Future<void> submitData() async {
     if (_formKey.currentState!.validate() && !selectedOptions.contains(null)) {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token');
       final url = Uri.parse(
-          "http://127.0.0.1:8000/api/get-reports"); // Use your actual Laravel endpoint
-
+          "http://127.0.0.1:1810/api/tugas"); // Use your actual Laravel endpoint
       try {
         final response = await http.post(
           url,
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer $token"
           },
           body: jsonEncode({
-            "namaPetugas": namaPetugasController.text,
-            "kloterKeberangkatan": kloterKeberangkatanController.text,
+            "nama": "Persiapan Keberangkatan",
+            "kloter": selectedKloterId,
+            "tugas_type": 2,
             "tasks": selectedOptions.map((e) => e.toString()).join(", "),
+            "title": taskDescriptions.map((e) => e.toString()).join(", ")
           }),
         );
-
+        print(response.body);
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Data berhasil dikirim")),
@@ -76,96 +124,108 @@ class _HariKeberangkatanState extends State<HariKeberangkatan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Tugas Persiapan Keberangkatan'),
-        backgroundColor: Colors.purple,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Nama Petugas',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Kloter Keberangkatan',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: taskDescriptions.length, // Number of tasks
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            taskDescriptions[index], // Display the task description
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Row(
+        appBar: AppBar(
+          title: Text('Tugas Persiapan Keberangkatan'),
+          backgroundColor: Colors.purple,
+        ),
+        body: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                DropdownButtonFormField<int>(
+                  value: selectedKloterId,
+                  hint: Text("Pilih Kloter Keberangkatan"),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedKloterId = value;
+                    });
+                  },
+                  items: kloterList.map<DropdownMenuItem<int>>((kloter) {
+                    return DropdownMenuItem<int>(
+                      value: kloter["id"],
+                      child: Text(kloter["nama"]),
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(
+                    labelText: 'Kloter Keberangkatan',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    return value == null
+                        ? 'Kloter Keberangkatan is required'
+                        : null;
+                  },
+                ),
+                SizedBox(height: 16),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: taskDescriptions.length, // Number of tasks
+                    itemBuilder: (context, index) {
+                      return Card(
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Radio(
-                                value: 0,
-                                groupValue: selectedOptions[index],
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    selectedOptions[index] = value;
-                                  });
-                                },
+                              Text(
+                                taskDescriptions[
+                                    index], // Display the task description
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text('Sudah'),
-                              Radio(
-                                value: 1,
-                                groupValue: selectedOptions[index],
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    selectedOptions[index] = value;
-                                  });
-                                },
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 0,
+                                    groupValue: selectedOptions[index],
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedOptions[index] = value;
+                                      });
+                                    },
+                                  ),
+                                  Text('Sudah'),
+                                  Radio(
+                                    value: 1,
+                                    groupValue: selectedOptions[index],
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedOptions[index] = value;
+                                      });
+                                    },
+                                  ),
+                                  Text('Tidak Terpenuhi'),
+                                  Radio(
+                                    value: 2,
+                                    groupValue: selectedOptions[index],
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedOptions[index] = value;
+                                      });
+                                    },
+                                  ),
+                                  Text('Dikerjakan oleh Rekan'),
+                                ],
                               ),
-                              Text('Tidak Terpenuhi'),
-                              Radio(
-                                value: 2,
-                                groupValue: selectedOptions[index],
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    selectedOptions[index] = value;
-                                  });
-                                },
-                              ),
-                              Text('Dikerjakan oleh Rekan'),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: submitData,
+                  child: Text('Laporkan'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.purple,
+                  ),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Handle report submission
-              },
-              child: Text('Laporkan'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

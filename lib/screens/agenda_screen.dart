@@ -5,7 +5,8 @@ import '../models/agenda.dart'; // Pastikan ini sesuai dengan path model Anda
 Future<void> addAgenda(Agenda agenda) async {
   try {
     final response = await http.post(
-      Uri.parse('http://127.0.0.1:8000/api/agenda'), // Ganti dengan IP server yang sesuai
+      Uri.parse(
+          'http://127.0.0.1:1810/api/agenda'), // Ganti dengan IP server yang sesuai
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -15,7 +16,8 @@ Future<void> addAgenda(Agenda agenda) async {
     if (response.statusCode == 201) {
       print('Agenda berhasil ditambahkan');
     } else {
-      print('Gagal menambahkan agenda: ${response.statusCode} - ${response.body}');
+      print(
+          'Gagal menambahkan agenda: ${response.statusCode} - ${response.body}');
     }
   } catch (e) {
     print('Terjadi kesalahan saat menambahkan agenda: $e');
@@ -26,7 +28,7 @@ Future<void> addAgenda(Agenda agenda) async {
 Future<List<Agenda>> fetchAgendas() async {
   try {
     final response = await http.get(
-      Uri.parse('http://127.0.0.1:8000/api/agenda'), // Sesuaikan dengan API
+      Uri.parse('http://127.0.0.1:1810/api/agenda'), // Sesuaikan dengan API
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -34,7 +36,8 @@ Future<List<Agenda>> fetchAgendas() async {
 
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);
-      List<Agenda> agendas = body.map((dynamic item) => Agenda.fromJson(item)).toList();
+      List<Agenda> agendas =
+          body.map((dynamic item) => Agenda.fromJson(item)).toList();
       return agendas;
     } else {
       throw Exception('Failed to load agendas');
