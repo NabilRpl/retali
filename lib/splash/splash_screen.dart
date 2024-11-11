@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreenHome extends StatefulWidget {
   @override
@@ -11,7 +12,15 @@ class _SplashScreenHomeState extends State<SplashScreenHome> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(seconds: 3), () {
-        Navigator.pushReplacementNamed(context, '/login');
+        final prefs = SharedPreferences.getInstance();
+        prefs.then((prefs) {
+          final token = prefs.getString('Token');
+          if (token != null) {
+            Navigator.pushReplacementNamed(context, '/homepage');
+          } else {
+            Navigator.pushReplacementNamed(context, '/login');
+          }
+        });
       });
     });
   }

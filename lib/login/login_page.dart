@@ -1,22 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../intro/intro_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-      routes: {
-        '/intro': (context) => IntroSlider(),
-      },
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -26,10 +13,54 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final String correctId = 'nabil';
-  final String correctPassword = 'ganteng';
   bool _isError = false;
   bool _isSaveLoginChecked = false;
+
+  // Tambahkan metode login API
+  Future<void> _login() async {
+    final url = Uri.parse(
+        "http://127.0.0.1:1810/api/login"); // Sesuaikan URL dengan endpoint Laravel Anda
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "email": _idController.text,
+          "password": _passwordController.text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final token = data['token'];
+        final username = data['username'];
+
+        // Save token to Flutter's local storage (shared_preferences)
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('Token', token);
+        await prefs.setString('Username', username);
+        // Lanjutkan ke halaman berikutnya jika login berhasil
+        setState(() {
+          _isError = false;
+        });
+        Navigator.pushReplacementNamed(context, '/intro');
+
+        // Simpan token ke secure storage atau shared preferences di sini jika diperlukan
+        print("Token: $token");
+      } else {
+        // Jika login gagal, tampilkan pesan kesalahan
+        setState(() {
+          _isError = true;
+        });
+        print("Login gagal: ${response.body}");
+      }
+    } catch (e) {
+      setState(() {
+        _isError = true;
+      });
+      print("Error: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Action for back button
+            Navigator.pop(context);
           },
         ),
         elevation: 0,
@@ -51,10 +82,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Text(
               'Login',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
@@ -112,23 +140,10 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      if (_idController.text == correctId &&
-                          _passwordController.text == correctPassword) {
-                        _isError = false;
-                        Navigator.pushReplacementNamed(context, '/intro');
-                      } else {
-                        _isError = true;
-                      }
-                    });
-                  },
+                  onPressed: _login, // Ubah panggilan onPressed ke _login
                   child: Text(
                     'Masuk',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ),

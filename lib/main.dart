@@ -56,7 +56,8 @@ class RoleSelectionPage extends StatelessWidget {
                 // Navigasi ke halaman user
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GoogleMapPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const GoogleMapPage()),
                 );
               },
               child: const Text("User Mode"),

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:qr_code/services/logout.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BandaraKeMekkah extends StatefulWidget {
   @override
@@ -11,7 +13,8 @@ class BandaraKeMekkah extends StatefulWidget {
 class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController namaPetugasController = TextEditingController();
-  final TextEditingController kloterKeberangkatanController = TextEditingController();
+  final TextEditingController kloterKeberangkatanController =
+      TextEditingController();
 
   final List<String> taskDescriptions = [
     '1.Setelah Jamaah di Bus Petugas membagikan Makan dan Minum kepada seluruh jamaah Retali.',
@@ -25,22 +28,68 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
   ];
 
   List<int?> selectedOptions = List<int?>.filled(8, null);
+  List<Map<String, dynamic>> kloterList = [];
+  int? selectedKloterId; // Store selected kloter ID
+
+  @override
+  void initState() {
+    super.initState();
+    fetchKloterData(); // Load kloter data on initialization
+  }
+
+  Future<void> fetchKloterData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token');
+    final url = Uri.parse(
+        "http://127.0.0.1:1810/api/kloter"); // Adjust to your endpoint
+
+    try {
+      final response = await http.get(url, headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        setState(() {
+          kloterList = data
+              .map((item) => {"id": item['id'], "nama": item['nama']})
+              .toList();
+        });
+      } else if (response.statusCode == 401) {
+        await logout(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Gagal mengambil data kloter")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
+  }
 
   Future<void> submitData() async {
     if (_formKey.currentState!.validate() && !selectedOptions.contains(null)) {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token');
       final url = Uri.parse(
-          "http://127.0.0.1:8000/api/get-reports"); // Use your actual Laravel endpoint
+          "http://127.0.0.1:1810/api/tugas"); // Use your actual Laravel endpoint
 
       try {
         final response = await http.post(
           url,
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer $token"
           },
           body: jsonEncode({
-            "namaPetugas": namaPetugasController.text,
-            "kloterKeberangkatan": kloterKeberangkatanController.text,
+            "nama": "Bandara Kemekkah",
+            "kloter": selectedKloterId,
+            "tugas_type": 6,
             "tasks": selectedOptions.map((e) => e.toString()).join(", "),
+            "title": taskDescriptions.map((e) => e.toString()).join(", ")
           }),
         );
 
@@ -65,7 +114,6 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,25 +127,28 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              TextFormField(
-                controller: namaPetugasController,
-                decoration: InputDecoration(
-                  labelText: 'Nama Petugas',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  return value!.isEmpty ? 'Nama Petugas is required' : null;
+              DropdownButtonFormField<int>(
+                value: selectedKloterId,
+                hint: Text("Pilih Kloter Keberangkatan"),
+                onChanged: (value) {
+                  setState(() {
+                    selectedKloterId = value;
+                  });
                 },
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: kloterKeberangkatanController,
+                items: kloterList.map<DropdownMenuItem<int>>((kloter) {
+                  return DropdownMenuItem<int>(
+                    value: kloter["id"],
+                    child: Text(kloter["nama"]),
+                  );
+                }).toList(),
                 decoration: InputDecoration(
                   labelText: 'Kloter Keberangkatan',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
-                  return value!.isEmpty ? 'Kloter Keberangkatan is required' : null;
+                  return value == null
+                      ? 'Kloter Keberangkatan is required'
+                      : null;
                 },
               ),
               SizedBox(height: 16),
