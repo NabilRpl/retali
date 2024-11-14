@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Form Example',
+      title: 'Konten (Tugas Foto)',
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
@@ -27,13 +29,40 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  Uint8List? _imageBytes1;
-  Uint8List? _imageBytes2;
-
+  List<Uint8List?> _images = []; // Stores images for each box
   final picker = ImagePicker();
+  final String accountId = "test_account"; // Replace with dynamic account ID as needed
 
-  Future<void> _pickImage(int containerNumber) async {
-    // Menampilkan pilihan sumber gambar
+  @override
+  void initState() {
+    super.initState();
+    _loadImages(accountId);
+  }
+
+  Future<void> _loadImages(String accountId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedImages = prefs.getStringList('saved_images_$accountId'); // Use account-specific key
+    if (savedImages != null) {
+      setState(() {
+        _images = savedImages.map((img) => img != 'null' ? base64Decode(img) : null).toList();
+      });
+    } else {
+      // Clear images if no saved data for this account
+      setState(() {
+        _images = [];
+      });
+    }
+  }
+
+  Future<void> _saveImages(String accountId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> encodedImages = _images
+        .map((img) => img != null ? base64Encode(img) : 'null')
+        .toList();
+    await prefs.setStringList('saved_images_$accountId', encodedImages); // Use account-specific key
+  }
+
+  Future<void> _pickImage(int index) async {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -46,8 +75,8 @@ class _CameraPageState extends State<CameraPage> {
                 title: Text('Ambil Foto dari Kamera'),
                 onTap: () async {
                   final pickedFile = await picker.pickImage(source: ImageSource.camera);
-                  Navigator.pop(context); // Tutup modal
-                  _setImage(pickedFile, containerNumber);
+                  Navigator.pop(context); // Close modal
+                  _setImage(pickedFile, index);
                 },
               ),
               ListTile(
@@ -55,8 +84,8 @@ class _CameraPageState extends State<CameraPage> {
                 title: Text('Pilih dari Galeri'),
                 onTap: () async {
                   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                  Navigator.pop(context); // Tutup modal
-                  _setImage(pickedFile, containerNumber);
+                  Navigator.pop(context); // Close modal
+                  _setImage(pickedFile, index);
                 },
               ),
             ],
@@ -66,17 +95,30 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
-  void _setImage(XFile? pickedFile, int containerNumber) async {
+  void _setImage(XFile? pickedFile, int index) async {
     if (pickedFile != null) {
       final bytes = await pickedFile.readAsBytes();
       setState(() {
-        if (containerNumber == 1) {
-          _imageBytes1 = bytes;
-        } else {
-          _imageBytes2 = bytes;
-        }
+        if (index >= _images.length) _images.add(null);
+        _images[index] = bytes;
       });
+      _saveImages(accountId);
     }
+  }
+
+  void _addNewBox() {
+    setState(() {
+      _images.add(null); // Add a new box without an image
+    });
+    _saveImages(accountId);
+  }
+
+  void _clearImages(String accountId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('saved_images_$accountId');
+    setState(() {
+      _images.clear();
+    });
   }
 
   @override
@@ -90,39 +132,32 @@ class _CameraPageState extends State<CameraPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Kartu pertama untuk upload foto
-            buildUploadCard('Opsi untuk File 1', Colors.white, _imageBytes1, () => _pickImage(1)),
-            SizedBox(height: 20),
-
-            // Kartu kedua untuk upload foto
-            buildUploadCard('Opsi untuk File 2', Colors.grey[200]!, _imageBytes2, () => _pickImage(2)),
-            SizedBox(height: 20),
-
-            // Buttons at the bottom
+            Expanded(
+              child: ListView.builder(
+                itemCount: _images.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      buildUploadCard(
+                        'Opsi untuk File ${index + 1}',
+                        Colors.white,
+                        _images[index],
+                        () => _pickImage(index),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  );
+                },
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Action for "Kirim"
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Text('Kirim'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Action for "Kosongkan formulir"
-                    setState(() {
-                      _imageBytes1 = null;
-                      _imageBytes2 = null;
-                    });
-                  },
-                  child: Text(
-                    'Kosongkan formulir',
-                    style: TextStyle(color: Colors.teal),
-                  ),
+                FloatingActionButton(
+                  onPressed: _addNewBox,
+                  backgroundColor: Colors.purple,
+                  child: Icon(Icons.add, color: Colors.white),
+                  tooltip: 'Tambah Box',
                 ),
               ],
             ),
@@ -132,7 +167,6 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
-  // Function to build the upload card
   Widget buildUploadCard(String title, Color backgroundColor, Uint8List? imageBytes, VoidCallback onUploadPressed) {
     return Card(
       elevation: 3,
@@ -153,14 +187,11 @@ class _CameraPageState extends State<CameraPage> {
               ),
             ),
             SizedBox(height: 10),
-
             Text(
               'Upload 1 file yang didukung. Maks 10 MB.',
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(height: 10),
-
-            // Menampilkan gambar yang diunggah
             if (imageBytes != null)
               Image.memory(
                 imageBytes,
@@ -176,8 +207,6 @@ class _CameraPageState extends State<CameraPage> {
                 child: Icon(Icons.image, color: Colors.grey),
               ),
             SizedBox(height: 10),
-
-            // Tombol upload
             ElevatedButton.icon(
               onPressed: onUploadPressed,
               icon: Icon(Icons.upload_file, color: Colors.blue),

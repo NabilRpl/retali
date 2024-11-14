@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   // Tambahkan metode login API
   Future<void> _login() async {
     final url = Uri.parse(
-        "http://127.0.0.1:1810/api/login"); // Sesuaikan URL dengan endpoint Laravel Anda
+        "http://192.168.0.105:1810/api/login"); // Sesuaikan URL dengan endpoint Laravel Anda
     try {
       final response = await http.post(
         url,

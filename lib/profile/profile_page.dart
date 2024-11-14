@@ -70,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
-    final url = Uri.parse('http://127.0.0.1:1810/api/user');
+    final url = Uri.parse('http://192.168.0.105:1810/api/user');
     final response = await http.get(
       url,
       headers: {
@@ -163,12 +163,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 value: _location ?? 'Loading...',
               ),
               const SizedBox(height: 16.0),
-              const ProfileInfoTile(
-                icon: Icons.access_time,
-                label: 'Time Zone',
-                value: 'Dubai (GMT+4)',
-              ),
-              const SizedBox(height: 32.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

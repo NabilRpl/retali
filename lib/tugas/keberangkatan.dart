@@ -4,90 +4,74 @@ class Keberangkatan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200], // Background color of the page
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, // Remove AppBar color
-        elevation: 0, // No shadow
-        automaticallyImplyLeading: false, // No back button
+      appBar: AppBar(title: Text("TUPersiapan Sebelum Keberangkatan Umrah")),
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: [
+          _buildSectionTitle("Persiapan Sebelum Keberangkatan"),
+
+          _buildSubSectionTitle("Menghadiri Manasik Umrah"),
+          _buildBulletPoint("Kehadiran Tour Leader (TL) dalam Manasik Umrah bersama jamaah sangat bermanfaat. Pertemuan pertama ini membantu TL membangun hubungan baik dan menciptakan rasa percaya. Jamaah akan merasa lebih nyaman dan yakin karena telah bertemu langsung dengan TL yang akan mendampingi mereka. TL juga dapat mengidentifikasi jamaah yang memiliki kebutuhan dan karakteristik khusus."),
+          
+          _buildSubSectionTitle("Memimpin Grouping Saat Manasik"),
+          _buildBulletPoint("Berkumpul dengan jamaah untuk berkenalan dan memberikan informasi penting tentang itinerary, persiapan fisik dan mental, serta materi bimbingan ibadah. Ajak jamaah untuk meluruskan niat dan mengedepankan pentingnya kekeluargaan."),
+          
+          _buildSubSectionTitle("Memasuki Grup Keberangkatan"),
+          _buildBulletPoint("Seorang TL perlu bergabung dalam WhatsApp Group (WAG) keberangkatan untuk memastikan koordinasi yang efektif, penyampaian informasi yang cepat, dan komunikasi dua arah dengan para jamaah. WAG juga membantu dalam meningkatkan kesiapan, membangun kebersamaan, dan mendokumentasikan perjalanan sehingga pengalaman umrah menjadi lebih lancar dan menyenangkan bagi semua pihak (mitra, manajemen, dan jamaah/beserta keluarga jamaah)."),
+          
+          _buildSubSectionTitle("Memberi Pengarahan dan Persiapan"),
+          _buildBulletPoint("TL perlu menyampaikan jadwal keberangkatan dan kepulangan, informasi dokumen penting seperti paspor dan visa, daftar perlengkapan yang harus dibawa, prosedur keberangkatan di bandara, detail akomodasi dan transportasi di Tanah Suci, itinerary, aturan dan etika ibadah, kontak darurat, serta tips dan trik untuk kenyamanan dan keamanan jamaah."),
+          
+          _buildSubSectionTitle("Menghafal Nama Jamaah"),
+          _buildBulletPoint("TL perlu menghafal nama setiap jamaah untuk mengenali mereka secara individu, guna membangun hubungan yang lebih dekat dan personal. Ini juga memudahkan komunikasi dan manajemen situasi darurat jika dibutuhkan."),
+          
+          _buildSubSectionTitle("Bergabung di Grup Officer dan Komunikasi Intens"),
+          _buildBulletPoint("Seorang TL perlu menjalin komunikasi intens dengan manajemen sebelum keberangkatan untuk memahami persyaratan dan kebijakan, menyampaikan informasi dari rekan di Grup Officer, dan bersiap menghadapi situasi darurat bersama demi kelancaran perjalanan."),
+          
+          _buildSubSectionTitle("Pengecekan Kesiapan Dokumen"),
+          _buildBulletPoint("Pastikan semua dokumen perjalanan seperti paspor, visa, tiket, dan surat keterangan kesehatan lengkap dan valid. Berkomunikasi dengan agen travel untuk memastikan semua persiapan logistik, termasuk akomodasi dan transportasi, telah diatur."),
+          
+          _buildSubSectionTitle("Menghafal Naskah Briefing"),
+          _buildBulletPoint("Menghafal naskah briefing penting bagi TL Umrah untuk memastikan keakuratan informasi yang disampaikan, menghindari kesalahan, dan memberikan kesan profesional yang membangun kepercayaan."),
+          
+          _buildSubSectionTitle("Koordinasi Sebelum Hari Keberangkatan"),
+          _buildBulletPoint("Koordinasi sebelum hari H keberangkatan Umrah sangat penting bagi petugas untuk memastikan kelancaran dan kesiapan seluruh aspek perjalanan. Petugas dapat mengonfirmasi jadwal keberangkatan, memeriksa kelengkapan dokumen, dan memastikan semua perlengkapan yang diperlukan telah siap."),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Title Box
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.purple, // Background color of the title box
-                borderRadius:
-                    BorderRadius.circular(10), // Rounded corners for the box
-              ),
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: Text(
-                  'Tugas Tour Leader Umrah', // Title text
-                  style: TextStyle(
-                    color: Colors.white, // White text color
-                    fontSize: 18.0, // Font size for the title
-                    fontWeight: FontWeight.bold, // Bold text
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 16.0), // Space between title and content
-            // Container for the text content
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.purple, // Background color of the content box
-                  borderRadius:
-                      BorderRadius.circular(10), // Rounded corners for the box
-                ),
-                padding:
-                    const EdgeInsets.all(16.0), // Padding inside the container
-                child: SingleChildScrollView(
-                  child: Text(
-                    '''
-1. Persiapan Sebelum Keberangkatan:
+    );
+  }
 
-- Menghadiri Manasik Umrah:
-Kehadiran Tour Leader (TL) dalam Manasik Umrah bersama jamaah sangat bermanfaat. Pertemuan pertama ini membantu TL membangun hubungan baik dan menciptakan rasa percaya. Jamaah akan merasa lebih nyaman dan yakin karena telah bertemu langsung dengan TL yang akan mendampingi mereka. TL juga dapat mengidentifikasi jamaah yang memiliki kebutuhan dan karakteristik khusus.
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 
-- Memimpin Grouping Saat Manasik:
-Berkumpul dengan jamaah untuk berkenalan dan memberikan informasi penting tentang itinerary, persiapan fisik dan mental, serta materi bimbingan ibadah. Ajak jamaah untuk meluruskan niat dan mengedepankan pentingnya kekeluargaan.
+  Widget _buildSubSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12.0, bottom: 4.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 
-- Memasuki Grup Keberangkatan:
-Seorang TL perlu bergabung dalam WhatsApp Group (WAG) keberangkatan untuk memastikan koordinasi yang efektif, penyampaian informasi yang cepat, dan komunikasi dua arah dengan para jamaah. WAG juga membantu dalam meningkatkan kesiapan, membangun kebersamaan, dan mendokumentasikan perjalanan sehingga pengalaman umrah menjadi lebih lancar dan menyenangkan bagi semua pihak (mitra, manajemen, dan jamaah/beserta keluarga jamaah).
-
-- Memberi Pengarahan dan Persiapan:
-TL perlu menyampaikan jadwal keberangkatan dan kepulangan, informasi dokumen penting seperti paspor dan visa, daftar perlengkapan yang harus dibawa, prosedur keberangkatan di bandara, detail akomodasi dan transportasi di Tanah Suci, itinerary, aturan dan etika ibadah, kontak darurat, serta tips dan trik untuk kenyamanan dan keamanan jamaah.
-
-- Menghafal Nama Jamaah:
-TL perlu menghafal nama setiap jamaah untuk mengenali mereka secara individu, guna membangun hubungan yang lebih dekat dan personal. Ini juga memudahkan komunikasi dan manajemen situasi darurat jika dibutuhkan.
-
-- Bergabung di Grup Officer dan Komunikasi Intens:
-Seorang TL perlu menjalin komunikasi intens dengan manajemen sebelum keberangkatan untuk memahami persyaratan dan kebijakan, menyampaikan informasi dari rekan di Grup Officer, dan bersiap menghadapi situasi darurat bersama demi kelancaran perjalanan.
-
-- Pengecekan Kesiapan Dokumen:
-Pastikan semua dokumen perjalanan seperti paspor, visa, tiket, dan surat keterangan kesehatan lengkap dan valid. Berkomunikasi dengan agen travel untuk memastikan semua persiapan logistik, termasuk akomodasi dan transportasi, telah diatur.
-
-- Menghafal Naskah Briefing:
-Menghafal naskah briefing penting bagi TL Umrah untuk memastikan keakuratan informasi yang disampaikan, menghindari kesalahan, dan memberikan kesan profesional yang membangun kepercayaan.
-
-- Koordinasi Sebelum Hari Keberangkatan:
-Koordinasi sebelum hari H keberangkatan Umrah sangat penting bagi petugas untuk memastikan kelancaran dan kesiapan seluruh aspek perjalanan. Petugas dapat mengonfirmasi jadwal keberangkatan, memeriksa kelengkapan dokumen, dan memastikan semua perlengkapan yang diperlukan telah siap.
-    ''',
-                    style: TextStyle(
-                      color: Colors.white, // White text color
-                      fontSize: 16.0, // Font size for content
-                      height: 1.5, // Line height for better readability
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+  Widget _buildBulletPoint(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("• ", style: TextStyle(fontSize: 16)),
+          Expanded(
+            child: Text(text, style: TextStyle(fontSize: 16)),
+          ),
+        ],
       ),
     );
   }

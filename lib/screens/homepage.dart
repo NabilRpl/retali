@@ -7,7 +7,6 @@ import 'package:qr_code/potensi-masalah/masalah_komunikasi.dart';
 import 'package:qr_code/potensi-masalah/masalah_psikologis.dart';
 import 'package:qr_code/potensi-masalah/masalah_teknologi.dart';
 import 'package:qr_code/potensi-masalah/masalah_transportasi.dart';
-import 'package:qr_code/scanners/found_screen.dart';
 import '../ceklis/ceklis_screen.dart';
 import '../doa-doa/doa_doa_screen.dart';
 import '../bimbingan-ibadah/bimbingan_ibadah_screen.dart';
@@ -246,23 +245,23 @@ class _HomePageState extends State<HomePage> {
             runSpacing: 35,
             alignment: WrapAlignment.spaceEvenly,
             children: <Widget>[
-              _iconWithText(Icons.menu_book, 'Doa-doa', context),
-              _iconWithText(Icons.school, 'Bimbingan\nIbadah', context),
-              _iconWithText(Icons.description, 'Naskah Briefing', context),
+              _iconWithText(Icons.book, 'Doa-doa', context),
+              _iconWithText(
+                  Icons.accessibility_new, 'Bimbingan\nIbadah', context),
+              _iconWithText(Icons.assignment, 'Naskah\nBriefing', context),
             ],
           ),
-          SizedBox(height: 20), // Add some space between rows
+          SizedBox(height: 30), // Add some space between rows
           // Bottom row of icons
           Wrap(
             spacing: 35,
             runSpacing: 35,
             alignment: WrapAlignment.spaceEvenly,
             children: <Widget>[
-              _iconWithText(Icons.event, 'Agenda', context),
-              _iconWithText(Icons.rule, 'Prosedur', context),
-              _iconWithText(Icons.library_books_rounded, 'Tugas', context),
-              _iconWithText(
-                  Icons.playlist_add_check_circle_sharp, 'Ceklis', context),
+              _iconWithText(Icons.calendar_today, 'Agenda', context),
+              _iconWithText(Icons.article, 'Prosedur', context),
+              _iconWithText(Icons.list_alt, 'Tugas', context),
+              _iconWithText(Icons.checklist, 'Ceklis', context),
             ],
           ),
         ],
@@ -280,14 +279,14 @@ class _HomePageState extends State<HomePage> {
       "assets/images/masalah_hotel.jpg",
       "assets/images/masalah_transportasi.jpg",
       "assets/images/masalah_komunikasi.jpg",
-      "assets/images/masalah_psikologis.jpg",
+      "assets/images/masalah_psikologi.jpg",
       "assets/images/masalah_cuaca.jpg",
       "assets/images/masalah_teknologi.jpg",
       "assets/images/masalah_lainnya.jpg",
     ];
 
     return SizedBox(
-      height: 80,
+      height: 100, // Sesuaikan tinggi tampilan keseluruhan
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: potensiMasalahImages.length,
@@ -295,8 +294,9 @@ class _HomePageState extends State<HomePage> {
           final imagePath = potensiMasalahImages[index];
 
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 4),
-            width: 440,
+            margin: EdgeInsets.symmetric(
+                horizontal: 4, vertical: 10), // Memindahkan gambar ke bawah
+            width: 250, // Ukuran lebar container lebih kecil
             child: InkWell(
               onTap: () {
                 Widget destinationPage;
@@ -350,6 +350,8 @@ class _HomePageState extends State<HomePage> {
                 child: Image.asset(
                   imagePath,
                   fit: BoxFit.cover,
+                  width: 200, // Memperkecil ukuran gambar yang terlihat
+                  height: 80, // Menyesuaikan tinggi gambar
                 ),
               ),
             ),
@@ -364,12 +366,7 @@ class _HomePageState extends State<HomePage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => FoundScreen(
-                    value: '',
-                    screenClose: () {},
-                    data: '',
-                  )),
+          MaterialPageRoute(builder: (context) => Scanner()),
         );
       },
       child: Icon(Icons.qr_code, color: Colors.white),
@@ -426,7 +423,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RoleSelectionPage()),
+                  MaterialPageRoute(builder: (context) =>  GoogleMapPage()),
                 );
               },
             ),
@@ -450,60 +447,42 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _iconWithText(IconData icon, String label, BuildContext context) {
-    double iconSize = (label == 'Doa-doa' ||
-            label == 'Bimbingan\nIbadah' ||
-            label == 'Naskah Briefing' ||
-            label == 'Prosedur' ||
-            label == 'Agenda' ||
-            label == 'Tugas' ||
-            label == 'Ceklis')
-        ? 40
-        : 16;
+    // Responsive icon size based on screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+    double iconSize = screenWidth * 0.07; // Adjust as needed
+    double padding = screenWidth * 0.03; // Responsive padding
 
     return GestureDetector(
       onTap: () {
+        // Navigate based on the label
         if (label == 'Doa-doa') {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DoaDoaScreen()),
-          );
+              context, MaterialPageRoute(builder: (context) => DoaDoaScreen()));
         } else if (label == 'Bimbingan\nIbadah') {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => BimbinganIbadahScreen()));
+        } else if (label == 'Naskah\nBriefing') {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => BimbinganIbadahScreen()),
-          );
-        } else if (label == 'Naskah Briefing') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => NaskahScreen()),
-          );
+              context, MaterialPageRoute(builder: (context) => NaskahScreen()));
         } else if (label == 'Prosedur') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProsedurScreen()),
-          );
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProsedurScreen()));
         } else if (label == 'Agenda') {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AgendaPage()),
-          );
+              context, MaterialPageRoute(builder: (context) => AgendaPage()));
         } else if (label == 'Tugas') {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TugasScreen()),
-          );
+              context, MaterialPageRoute(builder: (context) => TugasScreen()));
         } else if (label == 'Ceklis') {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CeklisScreen()),
-          );
+              context, MaterialPageRoute(builder: (context) => CeklisScreen()));
         }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(padding),
             decoration: BoxDecoration(
               color: Color(0xFFE6E0F8),
               borderRadius: BorderRadius.circular(10),
@@ -512,12 +491,15 @@ class _HomePageState extends State<HomePage> {
               icon,
               size: iconSize,
               color: const Color.fromARGB(255, 78, 29, 87),
-            ), // Modified icon size
+            ),
           ),
           SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(color: Colors.black, fontSize: 12),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: screenWidth * 0.035, // Responsive font size
+            ),
             textAlign: TextAlign.center,
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'QRscannerOverlay.dart';
 import 'found_screen.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class Scanner extends StatefulWidget {
 
 class _ScannerState extends State<Scanner> {
   MobileScannerController cameraController = MobileScannerController();
+  bool _screenOpened = false;
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
@@ -41,10 +44,18 @@ class _ScannerState extends State<Scanner> {
     );
   }
 
-  void _foundBarcode(BarcodeCapture barcodeCapture) {
-    final String code = barcodeCapture.barcodes.first.rawValue ?? "___";
+  void _foundBarcode(BarcodeCapture barcodeCapture) async {
+  if (!_screenOpened) {
+    final String code = barcodeCapture.barcodes.first.rawValue ?? "_";
+    _screenOpened = true;
 
-    // Immediately navigate to the FoundScreen
+    // Play beep sound with error handling
+    try {
+      await _audioPlayer.play(AssetSource('assets/sounds/scan_succes.mp3'));
+    } catch (e) {
+      print("Error playing sound: $e");
+    }
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -54,10 +65,14 @@ class _ScannerState extends State<Scanner> {
           data: '',
         ),
       ),
-    );
+    ).then((_) {
+      // This is called when the screen is closed
+      _screenOpened = false; // Reset so the next scan can be detected
+    });
   }
+}
 
   void _screenWasClosed() {
-    // No need to reset anything here as the scanner can continue
+    _screenOpened = false;
   }
 }

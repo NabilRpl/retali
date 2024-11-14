@@ -42,7 +42,7 @@ class _BandaraKetibaanState extends State<BandaraKetibaan> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
     final url = Uri.parse(
-        "http://127.0.0.1:1810/api/kloter"); // Adjust to your endpoint
+        "http://192.168.0.105:1810/api/kloter"); // Adjust to your endpoint
 
     try {
       final response = await http.get(url, headers: {
@@ -76,7 +76,7 @@ class _BandaraKetibaanState extends State<BandaraKetibaan> {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token');
       final url = Uri.parse(
-          "http://127.0.0.1:1810/api/tugas"); // Use your actual Laravel endpoint
+          "http://192.168.0.105:1810/api/tugas"); // Use your actual Laravel endpoint
 
       try {
         final response = await http.post(
@@ -211,9 +211,15 @@ class _BandaraKetibaanState extends State<BandaraKetibaan> {
               ),
               ElevatedButton(
                 onPressed: submitData,
-                child: Text('Laporkan'),
+                child: Text(
+                  'Laporkan',
+                  style: TextStyle(
+                      color: Colors.white), // Change the text color here
+                ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                  backgroundColor:
+                      Colors.purple, // Text color when the button is pressed
                 ),
               ),
             ],

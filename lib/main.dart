@@ -5,16 +5,25 @@ import 'package:qr_code/screens/homepage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:qr_code/maps/pages/admin_map_page.dart';
 import 'package:qr_code/maps/pages/google_map_page.dart';
-import '../splash/splash_screen.dart'; // Import SplashScreenHome
+import '../splash/splash_screen.dart';
+import 'scanners/database_helper.dart'; // Import SplashScreenHome
 
 void main() async {
-  // Inisialisasi Supabase
+  // Inisialisasi binding Flutter untuk memastikan semua widget siap
   WidgetsFlutterBinding.ensureInitialized();
-  await Supabase.initialize(
-    url: 'https://your-supabase-url.supabase.co',
-    anonKey: 'your-anon-key',
-  );
 
+  // Inisialisasi Supabase
+  await DatabaseHelper().initSupabase(); // Inisialisasi Supabase menggunakan DatabaseHelper
+  
+  // Cek status koneksi
+  final session = Supabase.instance.client.auth.currentSession;
+  if (session != null) {
+    print('Supabase terhubung: User ID: ${session.user.id}');
+  } else {
+    print('Supabase tidak terhubung.');
+  }
+
+  // Jalankan aplikasi
   runApp(MyApp());
 }
 

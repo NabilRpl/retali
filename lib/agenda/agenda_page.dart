@@ -1,115 +1,173 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
-import '../models/agenda.dart';
-import 'agenda_detail_page.dart'; // Import halaman detail
 
-class AgendaPage extends StatefulWidget {
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
   @override
-  _AgendaPageState createState() => _AgendaPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AgendaPage(),
+    );
+  }
 }
 
-class _AgendaPageState extends State<AgendaPage> {
-  late Future<List<Agenda>> futureAgendas;
-
-  @override
-  void initState() {
-    super.initState();
-    futureAgendas = fetchAgendas(); // Panggil fungsi untuk mengambil data
-  }
-
+class AgendaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Agenda'),
+        title: Text("Agenda"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {},
+          ),
+        ],
       ),
-      body: Center(
-        child: FutureBuilder<List<Agenda>>(
-          future: futureAgendas,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Agenda> agendas = snapshot.data!;
-              return ListView.builder(
-                itemCount: agendas.length,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 80,
+                    color: Colors.grey[200],
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Container(
+                    height: 80,
+                    color: Colors.grey[200],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 4,
                 itemBuilder: (context, index) {
-                  return GestureDetector( // Gunakan GestureDetector untuk menangani klik
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AgendaDetailPage(agenda: agendas[index]),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(255, 242, 255, 100),
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5.0,
-                              spreadRadius: 2.0,
-                              offset: const Offset(0, 3), // Shadow position
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Garis hitam di dalam box (di sebelah kiri konten)
-                            Container(
-                              width: 4, // Ketebalan garis
-                              height: 100, // Sesuaikan dengan tinggi box
-                              color: Colors.black, // Warna garis hitam
-                            ),
-                            const SizedBox(width: 16), // Jarak antara garis dan konten
+                  return AgendaItem();
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                            // Konten agenda di dalam box
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      agendas[index].kegiatan,
-                                      style: const TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      agendas[index].deskripsi ?? 'Tidak ada deskripsi',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 14,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+class AgendaItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Show a dialog with detailed information
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Agenda Details"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Berkumpul dan check in di bandara",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "Tanggal: 09 SEPT 2013",
+                  style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "Waktu: 8.00",
+                  style: TextStyle(color: Colors.purple, fontSize: 14),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  "Deskripsi: Silakan berkumpul di terminal keberangkatan tepat waktu untuk check-in.",
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Close"),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          height: 100,
+          decoration: BoxDecoration(
+            color: Color(0xFFE0BBE4),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 8,
+                height: double.infinity,
+                color: Colors.purple,
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Berkumpul dan check in di bandara",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
-                  );
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-
-            // By default, show a loading spinner
-            return const CircularProgressIndicator();
-          },
+                    SizedBox(height: 8),
+                    Text(
+                      "09 SEPT 2013",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 16),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "8.00",
+                  style: TextStyle(
+                    color: Colors.purple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              SizedBox(width: 12),
+            ],
+          ),
         ),
       ),
     );

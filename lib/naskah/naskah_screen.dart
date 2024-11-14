@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'naskahmanasik.dart';
-import 'brifingkeberangkatanscreen.dart';
-import 'citytourmadinahscreen.dart';
-import 'citytourmekkahscreen.dart';
+import 'naskah_briefing_keberangkatan/keberangkatan.dart';
+import 'naskah_briefing_madinah/naskah_screen_madinah.dart';
+import 'naskah_briefing_manasik/grouping_manasik.dart';
+import 'naskah_briefing_mekkah/naskah_screen_mekkah.dart';
 
 class NaskahScreen extends StatelessWidget {
   final List<String> carouselImages = [
@@ -65,13 +65,13 @@ class NaskahScreen extends StatelessWidget {
               padding: EdgeInsets.all(16),
               children: [
                 _buildDoaCard(context, 'Briefing Grouping Manasik',
-                    'Belum ada text', NaskahManasik()),
-                _buildDoaCard(context, 'Briefing saat Keberangkatan',
-                    'Belum ada text', Naskahbrifing()),
+                    '', GroupingManasik()),
+                _buildDoaCard(context, 'Briefing Saat Keberangkatan',
+                    '', Keberangkatan()),
                 _buildDoaCard(context, 'Bandara Jeddah ke Madinah',
-                    'Belum ada text', NaskahMadinah()),
+                    '', NaskahScreenMadinah()),
                 _buildDoaCard(context, 'Bandara Jeddah ke Mekkah',
-                    'Belum ada text', NaskahMekkah()),
+                    '', NaskahScreenMekkah()),
               ],
             ),
           ),

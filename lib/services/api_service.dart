@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/agenda.dart'; // Pastikan ini sesuai dengan path model Anda
+import '../models/agenda.dart';
 
 Future<void> addAgenda(Agenda agenda) async {
   try {
     final response = await http.post(
       Uri.parse(
-          'http://127.0.0.1:1810/api/agenda'), // Ganti dengan IP server yang sesuai
+          'http://192.168.0.105:1810/api/agenda'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(agenda.toJson()), // Pastikan menggunakan toJson method
+      body: jsonEncode(agenda.toJson()),
     );
 
     if (response.statusCode == 201) {
@@ -28,7 +28,7 @@ Future<void> addAgenda(Agenda agenda) async {
 Future<List<Agenda>> fetchAgendas() async {
   try {
     final response = await http.get(
-      Uri.parse('http://127.0.0.1:1810/api/agenda'), // Sesuaikan dengan API
+      Uri.parse('http://192.168.0.105:1810/api/agenda'), // Sesuaikan dengan API
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

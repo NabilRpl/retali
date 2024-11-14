@@ -37,7 +37,7 @@ class _CeklisPersiapanKeberangkatanState
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
     final url = Uri.parse(
-        "http://127.0.0.1:1810/api/kloter"); // Adjust to your endpoint
+        "http://192.168.0.105:1810/api/kloter"); // Adjust to your endpoint
 
     try {
       final response = await http.get(url, headers: {
@@ -70,7 +70,7 @@ class _CeklisPersiapanKeberangkatanState
     if (_formKey.currentState!.validate() && !selectedOptions.contains(null)) {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token');
-      final url = Uri.parse("http://127.0.0.1:1810/api/tugas");
+      final url = Uri.parse("http://192.168.0.105:1810/api/tugas");
       print(selectedOptions.map((e) => e.toString()).join(", "));
       try {
         final response = await http.post(
@@ -208,9 +208,15 @@ class _CeklisPersiapanKeberangkatanState
               ),
               ElevatedButton(
                 onPressed: submitData,
-                child: Text('Laporkan'),
+                child: Text(
+                  'Laporkan',
+                  style: TextStyle(
+                      color: Colors.white), // Change the text color here
+                ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                  backgroundColor:
+                      Colors.purple, // Text color when the button is pressed
                 ),
               ),
             ],

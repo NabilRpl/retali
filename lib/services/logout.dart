@@ -8,7 +8,7 @@ Future<void> logout(BuildContext context) async {
   final token = prefs.getString('Token');
 
   await http.post(
-    Uri.parse('http://127.0.0.1:1810/api/logout'),
+    Uri.parse('http://192.168.0.105:1810/api/logout'),
     headers: {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token',
