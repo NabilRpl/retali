@@ -7,6 +7,7 @@ import 'package:qr_code/potensi-masalah/masalah_komunikasi.dart';
 import 'package:qr_code/potensi-masalah/masalah_psikologis.dart';
 import 'package:qr_code/potensi-masalah/masalah_teknologi.dart';
 import 'package:qr_code/potensi-masalah/masalah_transportasi.dart';
+import 'package:qr_code/scanners/datatable_scanner.dart';
 import '../ceklis/ceklis_screen.dart';
 import '../doa-doa/doa_doa_screen.dart';
 import '../bimbingan-ibadah/bimbingan_ibadah_screen.dart';
@@ -366,7 +367,7 @@ class _HomePageState extends State<HomePage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Scanner()),
+          MaterialPageRoute(builder: (context) => ScanAndDisplayPage()),
         );
       },
       child: Icon(Icons.qr_code, color: Colors.white),
@@ -409,7 +410,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CameraPage()),
+                  MaterialPageRoute(builder: (context) => TasksPage()),
                 );
               },
             ),
@@ -423,7 +424,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  GoogleMapPage()),
+                  MaterialPageRoute(builder: (context) => GoogleMapPage()),
                 );
               },
             ),

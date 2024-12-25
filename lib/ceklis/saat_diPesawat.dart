@@ -40,7 +40,7 @@ class _SaatDiPesawatState extends State<SaatDiPesawat> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
     final url = Uri.parse(
-        "http://192.168.0.105:1810/api/kloter"); // Adjust to your endpoint
+        "http://192.168.18.121:1810/api/kloter"); // Adjust to your endpoint
 
     try {
       final response = await http.get(url, headers: {
@@ -74,7 +74,7 @@ class _SaatDiPesawatState extends State<SaatDiPesawat> {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token');
       final url = Uri.parse(
-          "http://192.168.0.105:1810/api/tugas"); // Use your actual Laravel endpoint
+          "http://192.168.18.121:1810/api/tugas"); // Use your actual Laravel endpoint
 
       try {
         final response = await http.post(

@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import '../intro/intro_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -19,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   // Tambahkan metode login API
   Future<void> _login() async {
     final url = Uri.parse(
-        "http://192.168.0.105:1810/api/login"); // Sesuaikan URL dengan endpoint Laravel Anda
+        "http://192.168.18.121:1810/api/login"); // Sesuaikan URL dengan endpoint Laravel Anda
     try {
       final response = await http.post(
         url,

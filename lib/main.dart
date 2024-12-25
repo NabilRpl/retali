@@ -13,8 +13,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Inisialisasi Supabase
-  await DatabaseHelper().initSupabase(); // Inisialisasi Supabase menggunakan DatabaseHelper
-  
+  await DatabaseHelper()
+      .initSupabase(); // Inisialisasi Supabase menggunakan DatabaseHelper
+
   // Cek status koneksi
   final session = Supabase.instance.client.auth.currentSession;
   if (session != null) {
