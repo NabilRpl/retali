@@ -37,7 +37,7 @@ class _CeklisPersiapanKeberangkatanState
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
     final url = Uri.parse(
-        "http://192.168.18.121:1810/api/kloter"); // Adjust to your endpoint
+        "http://192.168.1.56:8000/api/kloter"); // Adjust to your endpoint
 
     try {
       final response = await http.get(url, headers: {
@@ -70,7 +70,7 @@ class _CeklisPersiapanKeberangkatanState
     if (_formKey.currentState!.validate() && !selectedOptions.contains(null)) {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token');
-      final url = Uri.parse("http://192.168.18.121:1810/api/tugas");
+      final url = Uri.parse("http://192.168.1.56:8000/api/tugas");
       print(selectedOptions.map((e) => e.toString()).join(", "));
       try {
         final response = await http.post(
@@ -114,6 +114,8 @@ class _CeklisPersiapanKeberangkatanState
 
   @override
   Widget build(BuildContext context) {
+    final double fontSize = 16.0; // Define the fontSize variable
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Tugas Bandara Keberangkatan'),
@@ -122,7 +124,7 @@ class _CeklisPersiapanKeberangkatanState
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               DropdownButtonFormField<int>(
@@ -175,8 +177,16 @@ class _CeklisPersiapanKeberangkatanState
                                       selectedOptions[index] = value;
                                     });
                                   },
+                                  materialTapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // Memperkecil area klik
                                 ),
-                                Text('Sudah'),
+                                Text(
+                                  'Sudah',
+                                  style: TextStyle(
+                                    fontSize:
+                                        fontSize * 0.9, // Sesuaikan ukuran teks
+                                  ),
+                                ),
                                 Radio(
                                   value: 1,
                                   groupValue: selectedOptions[index],
@@ -185,8 +195,16 @@ class _CeklisPersiapanKeberangkatanState
                                       selectedOptions[index] = value;
                                     });
                                   },
+                                  materialTapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // Memperkecil area klik
                                 ),
-                                Text('Tidak Terpenuhi'),
+                                Text(
+                                  'Tidak Terpenuhi',
+                                  style: TextStyle(
+                                    fontSize:
+                                        fontSize * 0.9, // Sesuaikan ukuran teks
+                                  ),
+                                ),
                                 Radio(
                                   value: 2,
                                   groupValue: selectedOptions[index],
@@ -195,8 +213,20 @@ class _CeklisPersiapanKeberangkatanState
                                       selectedOptions[index] = value;
                                     });
                                   },
+                                  materialTapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // Memperkecil area klik
                                 ),
-                                Text('Dikerjakan oleh Rekan'),
+                                Flexible(
+                                  child: Text(
+                                    'Dikerjakan oleh Rekan',
+                                    style: TextStyle(
+                                      fontSize: fontSize *
+                                          0.9, // Sesuaikan ukuran teks
+                                    ),
+                                    overflow: TextOverflow
+                                        .ellipsis, // Menghindari teks terlalu panjang
+                                  ),
+                                ),
                               ],
                             ),
                           ],

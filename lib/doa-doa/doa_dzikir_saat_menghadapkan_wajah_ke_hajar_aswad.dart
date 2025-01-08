@@ -17,11 +17,14 @@ class DoaDzikirSaatMenghadapkanWajahKeHajarAswad extends StatelessWidget {
               'Arab:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text(
-              'بِسْمِ اللهِ .... اللهُ أَكْبَرُ',
-              textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 28), // Ukuran lebih besar
-              textDirection: TextDirection.rtl, // Teks berarah kanan
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'بِسْمِ اللهِ .... اللهُ أَكْبَرُ',
+                textAlign: TextAlign.right,
+                style: TextStyle(fontSize: 28), // Ukuran lebih besar
+                textDirection: TextDirection.rtl, // Teks berarah kanan
+              ),
             ),
             SizedBox(height: 20),
             Text(

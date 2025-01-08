@@ -31,6 +31,8 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
   List<Map<String, dynamic>> kloterList = [];
   int? selectedKloterId; // Store selected kloter ID
 
+  double fontSize = 14.0; // Define fontSize variable
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +43,7 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
     final url = Uri.parse(
-        "http://192.168.18.121:1810/api/kloter"); // Adjust to your endpoint
+        "http://192.168.1.56:8000/api/kloter"); // Adjust to your endpoint
 
     try {
       final response = await http.get(url, headers: {
@@ -75,7 +77,7 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token');
       final url = Uri.parse(
-          "http://192.168.18.121:1810/api/tugas"); // Use your actual Laravel endpoint
+          "http://192.168.1.56:8000/api/tugas"); // Use your actual Laravel endpoint
 
       try {
         final response = await http.post(
@@ -177,8 +179,16 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
                                       selectedOptions[index] = value;
                                     });
                                   },
+                                  materialTapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // Memperkecil area klik
                                 ),
-                                Text('Sudah'),
+                                Text(
+                                  'Sudah',
+                                  style: TextStyle(
+                                    fontSize:
+                                        fontSize * 0.9, // Sesuaikan ukuran teks
+                                  ),
+                                ),
                                 Radio(
                                   value: 1,
                                   groupValue: selectedOptions[index],
@@ -187,8 +197,16 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
                                       selectedOptions[index] = value;
                                     });
                                   },
+                                  materialTapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // Memperkecil area klik
                                 ),
-                                Text('Tidak Terpenuhi'),
+                                Text(
+                                  'Tidak Terpenuhi',
+                                  style: TextStyle(
+                                    fontSize:
+                                        fontSize * 0.9, // Sesuaikan ukuran teks
+                                  ),
+                                ),
                                 Radio(
                                   value: 2,
                                   groupValue: selectedOptions[index],
@@ -197,8 +215,20 @@ class _BandaraKeMekkahState extends State<BandaraKeMekkah> {
                                       selectedOptions[index] = value;
                                     });
                                   },
+                                  materialTapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // Memperkecil area klik
                                 ),
-                                Text('Dikerjakan oleh Rekan'),
+                                Flexible(
+                                  child: Text(
+                                    'Dikerjakan oleh Rekan',
+                                    style: TextStyle(
+                                      fontSize: fontSize *
+                                          0.9, // Sesuaikan ukuran teks
+                                    ),
+                                    overflow: TextOverflow
+                                        .ellipsis, // Menghindari teks terlalu panjang
+                                  ),
+                                ),
                               ],
                             ),
                           ],

@@ -20,7 +20,7 @@ class _UploadContentPageState extends State<UploadContentPage> {
   List<XFile> photos = [];
   XFile? video;
   bool isLoading = false;
-  String tugasDeskripsi = '';  // Variabel untuk menyimpan deskripsi tugas
+  String tugasDeskripsi = ''; // Variabel untuk menyimpan deskripsi tugas
 
   @override
   void initState() {
@@ -32,7 +32,8 @@ class _UploadContentPageState extends State<UploadContentPage> {
   Future<void> fetchTugasDeskripsi() async {
     try {
       var response = await http.get(
-        Uri.parse('http://192.168.18.121:1810/api/tugaskonten/${widget.tugasKontenId}'),
+        Uri.parse(
+            'http://192.168.1.56:8000/api/tugaskonten/${widget.tugasKontenId}'),
         headers: {
           'Accept': 'application/json',
         },
@@ -95,7 +96,7 @@ class _UploadContentPageState extends State<UploadContentPage> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.18.121:1810/api/userkonten'),
+        Uri.parse('http://192.168.1.56:8000/api/userkonten'),
       );
 
       if (token != null) {
@@ -152,11 +153,14 @@ class _UploadContentPageState extends State<UploadContentPage> {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to upload content. \n$errorMessage')),
+            SnackBar(
+                content: Text('Failed to upload content. \n$errorMessage')),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to upload content. ${response.reasonPhrase}')),
+            SnackBar(
+                content:
+                    Text('Failed to upload content. ${response.reasonPhrase}')),
           );
         }
       }
@@ -206,7 +210,8 @@ class _UploadContentPageState extends State<UploadContentPage> {
               label: Text('Select Video'),
             ),
             if (video != null)
-              Text('Video selected: ${video!.name}', style: TextStyle(color: Colors.blue)),
+              Text('Video selected: ${video!.name}',
+                  style: TextStyle(color: Colors.blue)),
             if (tugasDeskripsi.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),

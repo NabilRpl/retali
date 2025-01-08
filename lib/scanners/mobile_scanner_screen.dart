@@ -35,7 +35,7 @@ class MobileScannerScreen extends StatelessWidget {
                   await _audioPlayer.play(AssetSource('assets/sounds/beep.mp3'));
 
                   onScan(scanData);
-                  Navigator.pop(context); // Keluar dari halaman scan
+                  Navigator.pop(context);
                 }
               }
             },

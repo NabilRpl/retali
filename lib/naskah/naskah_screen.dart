@@ -16,20 +16,23 @@ class NaskahScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: screenHeight * 0.02), // Adjusted for responsiveness
           CarouselSlider(
             options: CarouselOptions(
-              height: 250.0,
+              height: screenHeight * 0.25, // Set height based on screen height
               autoPlay: true,
               enlargeCenterPage: true,
-              viewportFraction: 1.0, // Full width for each image
+              viewportFraction: 1.0,
             ),
             items: carouselImages.map((imagePath) {
               return Container(
-                width: MediaQuery.of(context).size.width,
+                width: screenWidth,
                 decoration: BoxDecoration(
                   color: Color(0xFFE6E0F8),
                 ),
@@ -41,9 +44,9 @@ class NaskahScreen extends StatelessWidget {
               );
             }).toList(),
           ),
-          SizedBox(height: 20), // Added spacing here
+          SizedBox(height: screenHeight * 0.02), // Added spacing for responsiveness
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05), // Dynamic padding
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -51,7 +54,7 @@ class NaskahScreen extends StatelessWidget {
                   'Naskah Briefing',
                   style: TextStyle(
                     color: Colors.purple,
-                    fontSize: 24,
+                    fontSize: screenWidth * 0.08, // Responsive font size
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -59,19 +62,15 @@ class NaskahScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: screenHeight * 0.01), // Added spacing for responsiveness
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(screenWidth * 0.05), // Dynamic padding
               children: [
-                _buildDoaCard(context, 'Briefing Grouping Manasik',
-                    '', GroupingManasik()),
-                _buildDoaCard(context, 'Briefing Saat Keberangkatan',
-                    '', Keberangkatan()),
-                _buildDoaCard(context, 'Bandara Jeddah ke Madinah',
-                    '', NaskahScreenMadinah()),
-                _buildDoaCard(context, 'Bandara Jeddah ke Mekkah',
-                    '', NaskahScreenMekkah()),
+                _buildDoaCard(context, 'Briefing Grouping Manasik', '', GroupingManasik()),
+                _buildDoaCard(context, 'Briefing Saat Keberangkatan', '', Keberangkatan()),
+                _buildDoaCard(context, 'Bandara Jeddah ke Madinah', '', NaskahScreenMadinah()),
+                _buildDoaCard(context, 'Bandara Jeddah ke Mekkah', '', NaskahScreenMekkah()),
               ],
             ),
           ),
@@ -80,8 +79,10 @@ class NaskahScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDoaCard(BuildContext context, String title, String description,
-      Widget targetScreen) {
+  Widget _buildDoaCard(BuildContext context, String title, String description, Widget targetScreen) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -92,30 +93,35 @@ class NaskahScreen extends StatelessWidget {
         );
       },
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: 8),
+        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01), // Dynamic margin
         elevation: 4,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(screenWidth * 0.05), // Dynamic padding
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
                 'assets/images/Vector.png',
-                width: 40,
-                height: 40,
+                width: screenWidth * 0.1, // Dynamic image size based on screen width
+                height: screenWidth * 0.1,
               ),
-              SizedBox(width: 10),
+              SizedBox(width: screenWidth * 0.04), // Responsive space between image and text
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05, // Responsive font size
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Text(description, style: TextStyle(fontSize: 16)),
+                    SizedBox(height: screenHeight * 0.01), // Dynamic spacing
+                    Text(
+                      description,
+                      style: TextStyle(fontSize: screenWidth * 0.04), // Responsive font size
+                    ),
                   ],
                 ),
               ),

@@ -5,6 +5,12 @@ class DoaNiatIhramScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text('Niat Ihram'),
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
@@ -17,11 +23,14 @@ class DoaNiatIhramScreen extends StatelessWidget {
               'Arab:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text(
-              'لَبَّيْكَ اللَّهُمَّ عُمْرَةً\nاللهم فَمَحِلَّيْ حَيْثُ حَبَسْتَنِيْ',
-              textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 28), // Ukuran lebih besar
-              textDirection: TextDirection.rtl, // Teks berarah kanan
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'لَبَّيْكَ اللَّهُمَّ عُمْرَةً\nاللهم فَمَحِلَّيْ حَيْثُ حَبَسْتَنِيْ',
+                textAlign: TextAlign.right,
+                style: TextStyle(fontSize: 28), // Ukuran lebih besar
+                textDirection: TextDirection.rtl, // Teks berarah kanan
+              ),
             ),
             SizedBox(height: 10),
             Text(

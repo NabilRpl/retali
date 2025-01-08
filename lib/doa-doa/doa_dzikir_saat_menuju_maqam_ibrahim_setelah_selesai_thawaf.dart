@@ -17,11 +17,14 @@ class DoaDzikirSaatMenujuMaqamIbrahimSetelahSelesaiThawaf extends StatelessWidge
               'Arab:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text(
-              'وَاتَّخِذُوْا مِنْ مَقَامِ إِبْرَاهِيْمَ مُصَلَّى',
-              textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 28), // Ukuran lebih besar
-              textDirection: TextDirection.rtl, // Teks berarah kanan
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'وَاتَّخِذُوْا مِنْ مَقَامِ إِبْرَاهِيْمَ مُصَلَّى',
+                textAlign: TextAlign.right,
+                style: TextStyle(fontSize: 28), // Ukuran lebih besar
+                textDirection: TextDirection.rtl, // Teks berarah kanan
+              ),
             ),
             SizedBox(height: 10),
             Text(

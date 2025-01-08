@@ -30,7 +30,8 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.18.121:1810/api/getalldatatable'),
+        Uri.parse(
+            'https://laravel-10-retali-1-production.up.railway.app/api/getalldatatable'),
         headers: {
           'Content-Type': 'application/json',
           "Authorization": "Bearer $token"
@@ -73,7 +74,8 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.18.121:1810/api/datatable'),
+        Uri.parse(
+            'https://laravel-10-retali-1-production.up.railway.app/api/datatable'),
         headers: {
           'Content-Type': 'application/json',
           "Authorization": "Bearer $token"
@@ -114,13 +116,13 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scan & Display Table'),
+        title: Text('Data Jamaah'),
         backgroundColor: Colors.purpleAccent,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : tableData.isEmpty
-              ? Center(child: Text('No data available'))
+              ? Center(child: Text('Belum ada data yang tersimpan'))
               : SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(

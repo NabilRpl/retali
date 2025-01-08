@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:qr_code/services/logout.dart';
 
-
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
 
@@ -27,7 +26,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
-    final url = Uri.parse('http://127.0.0.1:1810/api/user');
+    final url = Uri.parse('http://192.168.1.56:8000/api/user');
     final response = await http.get(
       url,
       headers: {
@@ -47,8 +46,7 @@ class _EditProfileState extends State<EditProfile> {
     } else if (response.statusCode == 401) {
       // Token expired, navigate to login page
       await logout(context);
-    }
-     else {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Gagal mengambil data user')),
       );
@@ -59,7 +57,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _saveUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
-    final url = Uri.parse('http://127.0.0.1:1810/api/user');
+    final url = Uri.parse('http://192.168.1.56:8000/api/user');
     final response = await http.put(
       url,
       headers: {
@@ -79,11 +77,10 @@ class _EditProfileState extends State<EditProfile> {
         const SnackBar(content: Text('Data berhasil diperbarui')),
       );
       Navigator.pop(context, true); // Kembali setelah menyimpan
-    }  else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       // Token expired, navigate to login page
       await logout(context);
-    }
-    else {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Gagal memperbarui data')),
       );

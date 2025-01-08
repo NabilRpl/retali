@@ -21,8 +21,8 @@ class _TasksPageState extends State<TasksPage> {
 
   Future<void> fetchTasks() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://192.168.18.121:1810/api/tugaskonten'));
+      final response =
+          await http.get(Uri.parse('http://192.168.1.56:8000/api/tugaskonten'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
@@ -56,7 +56,7 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tasks'),
+        title: Text('Konten'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

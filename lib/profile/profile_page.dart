@@ -70,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
-    final url = Uri.parse('http://192.168.18.121:1810/api/user');
+    final url = Uri.parse('http://192.168.1.56:8000/api/user');
     final response = await http.get(
       url,
       headers: {

@@ -9,7 +9,6 @@ import 'pages/KepulanganJamaahScreen.dart';
 import 'pages/PengantaranJamaahKeRaudhahScreen.dart';
 import 'pages/PenyambutanJamaahDiBandaraScreen.dart';
 import 'pages/PersiapanDanPelaksanaanUmrohScreen.dart';
-// Import other screens as before
 
 class ProsedurScreen extends StatelessWidget {
   final List<String> carouselImages = [
@@ -21,20 +20,23 @@ class ProsedurScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: screenHeight * 0.02),
           CarouselSlider(
             options: CarouselOptions(
-              height: 250.0,
+              height: screenHeight * 0.25,
               autoPlay: true,
               enlargeCenterPage: true,
-              viewportFraction: 1.0, // Use full width for each image
+              viewportFraction: 1.0,
             ),
             items: carouselImages.map((imagePath) {
               return Container(
-                width: MediaQuery.of(context).size.width,
+                width: screenWidth,
                 decoration: BoxDecoration(
                   color: Color(0xFFE6E0F8),
                 ),
@@ -46,9 +48,9 @@ class ProsedurScreen extends StatelessWidget {
               );
             }).toList(),
           ),
-          SizedBox(height: 16), // Add spacing here
+          SizedBox(height: screenHeight * 0.02),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -56,7 +58,7 @@ class ProsedurScreen extends StatelessWidget {
                   'Prosedur',
                   style: TextStyle(
                     color: Colors.purple,
-                    fontSize: 24,
+                    fontSize: screenWidth * 0.08,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -64,10 +66,10 @@ class ProsedurScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: screenHeight * 0.01),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(screenWidth * 0.05),
               children: [
                 _buildDoaCard(
                     context,
@@ -87,7 +89,7 @@ class ProsedurScreen extends StatelessWidget {
                 _buildDoaCard(
                     context,
                     'Handling Jamaah di bus sampai hotel',
-                    'Belum ada text', 
+                    'Belum ada text',
                     HandlingJamaahDiBusSampaiHotelScreen()),
                 _buildDoaCard(
                     context,
@@ -98,17 +100,17 @@ class ProsedurScreen extends StatelessWidget {
                     context,
                     'Pengantaran Jamaah ke Raudhah',
                     'Belum ada text',
-                    PengantaranJamaahKeRaudhahScreen()), // Corrected capitalization
+                    PengantaranJamaahKeRaudhahScreen()),
                 _buildDoaCard(
                     context,
                     'Penyambutan Jamaah di Bandara',
                     'Belum ada text',
-                    PenyambutanJamaahDiBandaraScreen()), // Corrected capitalization
+                    PenyambutanJamaahDiBandaraScreen()),
                 _buildDoaCard(
                     context,
                     'Persiapan dan Pelaksanaan Umroh',
                     'Belum ada text',
-                    PersiapanDanPelaksanaanUmrohScreen()), // Corrected capitalization
+                    PersiapanDanPelaksanaanUmrohScreen()),
               ],
             ),
           ),
@@ -119,6 +121,9 @@ class ProsedurScreen extends StatelessWidget {
 
   Widget _buildDoaCard(BuildContext context, String title, String description,
       Widget targetScreen) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -129,29 +134,35 @@ class ProsedurScreen extends StatelessWidget {
         );
       },
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: 8),
+        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
         elevation: 4,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(screenWidth * 0.05),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
                 'assets/images/Vector.png',
-                width: 40,
-                height: 40,
+                width: screenWidth * 0.1,
+                height: screenWidth * 0.1,
               ),
-              SizedBox(width: 10),
+              SizedBox(width: screenWidth * 0.04),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Text(description, style: TextStyle(fontSize: 16)),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      description,
+                      style: TextStyle(fontSize: screenWidth * 0.04),
+                    ),
                   ],
                 ),
               ),

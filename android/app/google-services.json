@@ -1,29 +1,25 @@
 {
-  "project_info": {
-    "project_number": "223545025687",
-    "project_id": "retali-zero-complaint-121d3",
-    "storage_bucket": "retali-zero-complaint-121d3.firebasestorage.app"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:223545025687:android:d912a447298a76d43675d2",
-        "android_client_info": {
-          "package_name": "com.example.qr_code"
+    "project_info": {
+        "project_number": "223545025687",
+        "project_id": "retali-zero-complaint-121d3",
+        "storage_bucket": "retali-zero-complaint-121d3.firebasestorage.app"
+    },
+    "client": [{
+        "client_info": {
+            "mobilesdk_app_id": "1:223545025687:android:d912a447298a76d43675d2",
+            "android_client_info": {
+                "package_name": "com.example.qr_code"
+            }
+        },
+        "oauth_client": [],
+        "api_key": [{
+            "current_key": "AIzaSyBMjSIDxzgmIFW1uqIZzeHzJ3t6614Umg8"
+        }],
+        "services": {
+            "appinvite_service": {
+                "other_platform_oauth_client": []
+            }
         }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBMjSIDxzgmIFW1uqIZzeHzJ3t6614Umg8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    }],
+    "configuration_version": "1"
 }
