@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../intro/procedure_page.dart';
+import '../screens/homepage.dart';
 
 class IntroSlider extends StatefulWidget {
   const IntroSlider({Key? key}) : super(key: key);
@@ -12,6 +12,24 @@ class _IntroSliderState extends State<IntroSlider> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
+  final List<Map<String, String>> _slides = [
+    {
+      'image': 'assets/images/umrah.png',
+      'title': 'Selamat datang di Zero Complain',
+      'subtitle': 'Aplikasi panduan Tour Leader',
+    },
+    {
+      'image': 'assets/images/travel_umrah.png',
+      'title': 'Fitur Terlengkap',
+      'subtitle': 'Membantu menyelesaikan tugas Anda dengan mudah',
+    },
+    {
+      'image': 'assets/images/umrah.png',
+      'title': 'Jelajahi Kemudahan',
+      'subtitle': 'Temukan solusi untuk setiap kebutuhan perjalanan',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,21 +37,30 @@ class _IntroSliderState extends State<IntroSlider> {
         child: Column(
           children: [
             Expanded(
-              child: PageView(
+              child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: (int page) {
                   setState(() {
                     _currentPage = page;
                   });
+                  if (page == _slides.length - 1) {
+                    // Pindah ke HomeScreen jika di slide terakhir
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    });
+                  }
                 },
-                children: [
-                  _buildPageContent(
-                    image: 'assets/images/umrah.png',
-                    title: 'Selamat datang di Zero Complain',
-                    subtitle: 'Aplikasi panduan Tour Leader',
-                  ),
-                  // Tambahkan halaman lain di sini jika diperlukan
-                ],
+                itemCount: _slides.length,
+                itemBuilder: (context, index) {
+                  return _buildPageContent(
+                    image: _slides[index]['image']!,
+                    title: _slides[index]['title']!,
+                    subtitle: _slides[index]['subtitle']!,
+                  );
+                },
               ),
             ),
             Padding(
@@ -43,10 +70,12 @@ class _IntroSliderState extends State<IntroSlider> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProcedurePage()),
-                      );
+                      if (_currentPage > 0) {
+                        _pageController.previousPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
                     },
                     icon: const Icon(
                       Icons.arrow_back_ios_rounded,
@@ -56,6 +85,20 @@ class _IntroSliderState extends State<IntroSlider> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: _buildPageIndicator(),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (_currentPage < _slides.length - 1) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: Color(0xFF673AB7),
+                    ),
                   ),
                 ],
               ),
@@ -92,6 +135,7 @@ class _IntroSliderState extends State<IntroSlider> {
         const SizedBox(height: 10),
         Text(
           subtitle,
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 16,
           ),
@@ -101,11 +145,10 @@ class _IntroSliderState extends State<IntroSlider> {
   }
 
   List<Widget> _buildPageIndicator() {
-    List<Widget> list = [];
-    for (int i = 0; i < 1; i++) {
-      list.add(i == _currentPage ? _indicator(true) : _indicator(false));
-    }
-    return list;
+    return List.generate(
+      _slides.length,
+      (index) => _indicator(index == _currentPage),
+    );
   }
 
   Widget _indicator(bool isActive) {

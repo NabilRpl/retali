@@ -14,73 +14,85 @@ class BimbinganIbadahScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          CarouselSlider(
-            options: CarouselOptions(
-              height: 250.0,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              viewportFraction: 1.0, // Full width for each image
-            ),
-            items: carouselImages.map((imagePath) {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Color(0xFFE6E0F8),
-                  borderRadius: BorderRadius.circular(15),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double screenWidth = constraints.maxWidth;
+          double screenHeight = constraints.maxHeight;
+
+          return Column(
+            children: [
+              SizedBox(height: screenHeight * 0.02), // Menyesuaikan margin atas
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: screenHeight * 0.25, // Menyesuaikan tinggi carousel
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  viewportFraction: 1.0, // Lebar penuh untuk setiap gambar
                 ),
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
+                items: carouselImages.map((imagePath) {
+                  return Container(
+                    width: screenWidth,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFE6E0F8),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: screenHeight * 0.02), // Menambahkan ruang antara carousel dan teks
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05), // Menyesuaikan padding
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bimbingan Ibadah',
+                      style: TextStyle(
+                        color: Colors.purple,
+                        fontSize: screenWidth * 0.08, // Menyesuaikan ukuran font
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Divider(color: Colors.purple, thickness: 2),
+                  ],
                 ),
-              );
-            }).toList(),
-          ),
-          // Add space between the carousel and the "Bimbingan Ibadah" text
-          SizedBox(height: 20), 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Bimbingan Ibadah',
-                  style: TextStyle(
-                    color: Colors.purple,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              SizedBox(height: screenHeight * 0.01),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.all(screenWidth * 0.05), // Menyesuaikan padding
+                  children: [
+                    _buildDoaCard(
+                        context,
+                        'Bimbingan Ibadah Umrah',
+                        'Belum ada text', 
+                        IbadahUmroh(),
+                        screenWidth,
+                        screenHeight),
+                    _buildDoaCard(
+                        context,
+                        'Bimbingan Ibadah di Raudhah', 
+                        'Belum ada text',
+                        IbadahRaudhah(),
+                        screenWidth,
+                        screenHeight),
+                  ],
                 ),
-                Divider(color: Colors.purple, thickness: 2),
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.all(16),
-              children: [
-                _buildDoaCard(context, 
-                    'Bimbingan Ibadah Umrah',
-                    'Belum ada text', 
-                    IbadahUmroh()),
-                _buildDoaCard(context, 
-                    'Bimbingan Ibadah di Raudhah', 
-                    'Belum ada text',
-                    IbadahRaudhah()),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
   Widget _buildDoaCard(BuildContext context, String title, String description,
-      Widget targetScreen) {
+      Widget targetScreen, double screenWidth, double screenHeight) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -91,30 +103,35 @@ class BimbinganIbadahScreen extends StatelessWidget {
         );
       },
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: 8),
+        margin: EdgeInsets.symmetric(vertical: screenWidth * 0.02), // Menyesuaikan margin
         elevation: 4,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(screenWidth * 0.05), // Menyesuaikan padding
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
                 'assets/images/Vector.png',
-                width: 40,
-                height: 40,
+                width: screenWidth * 0.1, // Menyesuaikan ukuran gambar
+                height: screenWidth * 0.1,
               ),
-              SizedBox(width: 10),
+              SizedBox(width: screenWidth * 0.04),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05, // Menyesuaikan ukuran font
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Text(description, style: TextStyle(fontSize: 16)),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      description,
+                      style: TextStyle(fontSize: screenWidth * 0.04), // Menyesuaikan ukuran font
+                    ),
                   ],
                 ),
               ),

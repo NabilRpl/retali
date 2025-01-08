@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import '../intro/intro_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -14,12 +13,12 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isError = false;
-  bool _isSaveLoginChecked = false;
+  bool _isSaveLoginChecked = true;
+  bool _isPasswordVisible = false;
 
   // Tambahkan metode login API
   Future<void> _login() async {
-    final url = Uri.parse(
-        "http://192.168.0.105:1810/api/login"); // Sesuaikan URL dengan endpoint Laravel Anda
+    final url = Uri.parse("http://192.168.1.56:8000/api/login");
     try {
       final response = await http.post(
         url,
@@ -44,11 +43,8 @@ class _LoginPageState extends State<LoginPage> {
           _isError = false;
         });
         Navigator.pushReplacementNamed(context, '/intro');
-
-        // Simpan token ke secure storage atau shared preferences di sini jika diperlukan
         print("Token: $token");
       } else {
-        // Jika login gagal, tampilkan pesan kesalahan
         setState(() {
           _isError = true;
         });
@@ -65,21 +61,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        elevation: 0,
-        backgroundColor: Colors.white,
-      ),
+      appBar: null,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Center(
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 100,
+                height: 100,
+              ),
+            ),
+            SizedBox(height: 24),
             Text(
               'Login',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -104,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              obscureText: true,
+              obscureText: !_isPasswordVisible, // Toggle password visibility
               decoration: InputDecoration(
                 labelText: 'Kata Sandi',
                 border: OutlineInputBorder(
@@ -112,6 +107,18 @@ class _LoginPageState extends State<LoginPage> {
                   borderSide: BorderSide(color: Colors.purple),
                 ),
                 errorText: _isError ? 'ID atau Kata Sandi salah' : null,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
               ),
             ),
             SizedBox(height: 16),

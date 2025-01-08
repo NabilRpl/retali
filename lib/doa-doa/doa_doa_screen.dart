@@ -23,20 +23,23 @@ class DoaDoaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Column(
         children: [
           SizedBox(height: 20),
           CarouselSlider(
             options: CarouselOptions(
-              height: 250.0,
+              height: screenHeight * 0.25, // Use responsive height
               autoPlay: true,
               enlargeCenterPage: true,
-              viewportFraction: 1.0, // Full width for each image
+              viewportFraction: 1.0,
             ),
             items: carouselImages.map((imagePath) {
               return Container(
-                width: MediaQuery.of(context).size.width,
+                width: screenWidth,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   gradient: LinearGradient(
@@ -53,7 +56,7 @@ class DoaDoaScreen extends StatelessWidget {
               );
             }).toList(),
           ),
-          SizedBox(height: 20), // Add spacing here
+          SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -63,7 +66,7 @@ class DoaDoaScreen extends StatelessWidget {
                   'Doa-doa',
                   style: TextStyle(
                     color: Colors.purple,
-                    fontSize: 24,
+                    fontSize: screenWidth * 0.06, // Adjust text size based on screen width
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -135,6 +138,8 @@ class DoaDoaScreen extends StatelessWidget {
 
   Widget _buildDoaCard(BuildContext context, String title, String description,
       Widget targetScreen) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -154,8 +159,8 @@ class DoaDoaScreen extends StatelessWidget {
             children: [
               Image.asset(
                 'assets/images/Vector.png',
-                width: 40,
-                height: 40,
+                width: screenWidth * 0.1, // Use responsive width for the icon
+                height: screenWidth * 0.1,
               ),
               SizedBox(width: 10),
               Expanded(
@@ -165,10 +170,13 @@ class DoaDoaScreen extends StatelessWidget {
                     Text(
                       title,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
-                    Text(description, style: TextStyle(fontSize: 16)),
+                    Text(
+                      description,
+                      style: TextStyle(fontSize: screenWidth * 0.04),
+                    ),
                   ],
                 ),
               ),

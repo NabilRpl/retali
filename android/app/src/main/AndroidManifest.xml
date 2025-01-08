@@ -16,9 +16,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:label="qr_code"
+        android:label="Retali Zero Complaint"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true">
         
@@ -49,7 +49,7 @@
         <!-- Meta-data for Flutter and Google Maps API Key -->
         <meta-data android:name="flutterEmbedding" android:value="2" />
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="AIzaSyCjhncKU6OPFmAt9ACO7x_-etUqbmex9go"/>
+                   android:value="AIzaSyCMeEjnoEgtLQd1rjiit8pBVV9iV22J7KU"/>
 
     </application>
 

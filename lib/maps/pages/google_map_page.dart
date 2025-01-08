@@ -4,7 +4,6 @@ import 'package:location/location.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:qr_code/maps/consts.dart'; // Ensure your API key is configured here
 import 'dart:async';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GoogleMapPage extends StatefulWidget {
   const GoogleMapPage({super.key});
@@ -16,7 +15,6 @@ class GoogleMapPage extends StatefulWidget {
 class _GoogleMapPageState extends State<GoogleMapPage> {
   final locationController = Location();
   Completer<GoogleMapController> _controller = Completer();
-  final supabase = Supabase.instance.client; // Supabase client
 
   static const googlePlex = LatLng(37.4223, -122.0848);
   static const mountainView = LatLng(37.3861, -122.0839);
@@ -39,22 +37,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   Future<void> _moveCameraTo(LatLng location) async {
     final controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newLatLng(location));
-  }
-
-  // Send user's location to the database
-  Future<void> updateUserLocationInDatabase(LatLng location) async {
-    final userId = "unique_user_id"; // Replace with actual user ID
-
-    try {
-      await supabase.from('user_locations').upsert({
-        'user_id': userId,
-        'latitude': location.latitude,
-        'longitude': location.longitude,
-        'updated_at': DateTime.now().toIso8601String(),
-      });
-    } catch (error) {
-      debugPrint("Error updating user location: $error");
-    }
   }
 
   @override
@@ -117,9 +99,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
             currentPosition = newPosition;
           });
           _moveCameraTo(newPosition);
-
-          // Update user's location in the database
-          updateUserLocationInDatabase(newPosition);
         }
       }
     });

@@ -7,7 +7,7 @@ class DoaMelihatKaabahScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Doa Saat Melihat Ka\'bah'),
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
-        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -20,17 +20,24 @@ class DoaMelihatKaabahScreen extends StatelessWidget {
               'Arab:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text(
-              'اللَّهُمَّ أَنْتَ السَّلَامُ ...',
-              textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 28), // Ukuran lebih besar
-              textDirection: TextDirection.rtl, // Teks berarah kanan
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'اللَّهُمَّ أَنْتَ السَّلَامُ ...',
+                textAlign: TextAlign.right,
+                style: TextStyle(fontSize: 28), // Ukuran lebih besar
+                textDirection: TextDirection.rtl, // Teks berarah kanan
+              ),
             ),
-             Text(
+            SizedBox(height: 10),
+            Text(
               'Latin:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text('Allahumma zid haazal baita ...'),
+            Text(
+              'Allahumma zid haazal baita ...',
+              style: TextStyle(fontSize: 18), // Ukuran lebih besar
+            ),
             SizedBox(height: 18),
           ],
         ),
