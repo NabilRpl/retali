@@ -13,12 +13,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isError = false;
-  bool _isSaveLoginChecked = true;
-  bool _isPasswordVisible = false;
-
+  bool _isSaveLoginChecked = false;
   // Tambahkan metode login API
   Future<void> _login() async {
-    final url = Uri.parse("http://192.168.1.56:8000/api/login");
+    final url = Uri.parse("http://192.168.0.100:8000/api/login");
     try {
       final response = await http.post(
         url,
@@ -28,12 +26,10 @@ class _LoginPageState extends State<LoginPage> {
           "password": _passwordController.text,
         }),
       );
-
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];
         final username = data['username'];
-
         // Save token to Flutter's local storage (shared_preferences)
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('Token', token);
@@ -43,8 +39,10 @@ class _LoginPageState extends State<LoginPage> {
           _isError = false;
         });
         Navigator.pushReplacementNamed(context, '/intro');
+        // Simpan token ke secure storage atau shared preferences di sini jika diperlukan
         print("Token: $token");
       } else {
+        // Jika login gagal, tampilkan pesan kesalahan
         setState(() {
           _isError = true;
         });
@@ -61,20 +59,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Image.asset(
-                'assets/images/logo.png',
-                width: 100,
-                height: 100,
-              ),
-            ),
-            SizedBox(height: 24),
             Text(
               'Login',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -99,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              obscureText: !_isPasswordVisible, // Toggle password visibility
+              obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Kata Sandi',
                 border: OutlineInputBorder(
@@ -107,18 +106,6 @@ class _LoginPageState extends State<LoginPage> {
                   borderSide: BorderSide(color: Colors.purple),
                 ),
                 errorText: _isError ? 'ID atau Kata Sandi salah' : null,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                ),
               ),
             ),
             SizedBox(height: 16),

@@ -5,7 +5,7 @@ import '../models/agenda.dart';
 Future<void> addAgenda(Agenda agenda) async {
   try {
     final response = await http.post(
-      Uri.parse('http://192.168.1.56:8000/api/agenda'),
+      Uri.parse('http://192.168.0.100:8000/api/agenda'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -27,7 +27,7 @@ Future<void> addAgenda(Agenda agenda) async {
 Future<List<Agenda>> fetchAgendas() async {
   try {
     final response = await http.get(
-      Uri.parse('http://192.168.1.56:8000/api/agenda'), // Sesuaikan dengan API
+      Uri.parse('http://192.168.0.100:8000/api/agenda'), // Sesuaikan dengan API
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

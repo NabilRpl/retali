@@ -3,7 +3,6 @@ import 'package:qr_code/intro/intro_slider.dart';
 import 'package:qr_code/login/login_page.dart';
 import 'package:qr_code/screens/homepage.dart';
 import '../splash/splash_screen.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

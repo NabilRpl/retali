@@ -6,7 +6,7 @@ Future<void> addAgenda(Agenda agenda) async {
   try {
     final response = await http.post(
       Uri.parse(
-          'http://127.0.0.1:8000/api/agenda'), // Ganti dengan IP server yang sesuai
+          'http://127.0.0.1:1810/api/agenda'), // Ganti dengan IP server yang sesuai
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -28,7 +28,7 @@ Future<void> addAgenda(Agenda agenda) async {
 Future<List<Agenda>> fetchAgendas() async {
   try {
     final response = await http.get(
-      Uri.parse('http://127.0.0.1:8000/api/agenda'), // Sesuaikan dengan API
+      Uri.parse('http://127.0.0.1:1810/api/agenda'), // Sesuaikan dengan API
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

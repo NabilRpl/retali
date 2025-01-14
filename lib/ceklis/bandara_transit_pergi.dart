@@ -42,7 +42,7 @@ class _BandaraTransitPergiState extends State<BandaraTransitPergi> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
     final url = Uri.parse(
-        "http://192.168.1.56:8000/api/kloter"); // Adjust to your endpoint
+        "http://192.168.0.100:8000/api/kloter"); // Adjust to your endpoint
 
     try {
       final response = await http.get(url, headers: {
@@ -76,7 +76,7 @@ class _BandaraTransitPergiState extends State<BandaraTransitPergi> {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token');
       final url = Uri.parse(
-          "http://192.168.1.56:8000/api/tugas"); // Use your actual Laravel endpoint
+          "http://192.168.0.100:8000/api/tugas"); // Use your actual Laravel endpoint
 
       try {
         final response = await http.post(

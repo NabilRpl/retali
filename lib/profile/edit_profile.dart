@@ -26,7 +26,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
-    final url = Uri.parse('http://192.168.1.56:8000/api/user');
+    final url = Uri.parse('http://192.168.0.100:8000/api/user');
     final response = await http.get(
       url,
       headers: {
@@ -57,7 +57,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _saveUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
-    final url = Uri.parse('http://192.168.1.56:8000/api/user');
+    final url = Uri.parse('http://192.168.0.100:8000/api/user');
     final response = await http.put(
       url,
       headers: {

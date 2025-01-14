@@ -33,7 +33,7 @@ class _UploadContentPageState extends State<UploadContentPage> {
     try {
       var response = await http.get(
         Uri.parse(
-            'http://192.168.1.56:8000/api/tugaskonten/${widget.tugasKontenId}'),
+            'http://192.168.0.100:8000/api/tugaskonten/${widget.tugasKontenId}'),
         headers: {
           'Accept': 'application/json',
         },
@@ -96,7 +96,7 @@ class _UploadContentPageState extends State<UploadContentPage> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.1.56:8000/api/userkonten'),
+        Uri.parse('http://192.168.0.100:8000/api/userkonten'),
       );
 
       if (token != null) {

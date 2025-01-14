@@ -12,7 +12,6 @@ class ScanAndDisplayPage extends StatefulWidget {
 
 class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
   List<Map<String, dynamic>> tableData = [];
-
   bool isLoading = false;
 
   @override
@@ -30,8 +29,7 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
 
     try {
       final response = await http.get(
-        Uri.parse(
-            'https://laravel-10-retali-1-production.up.railway.app/api/getalldatatable'),
+        Uri.parse('http://192.168.0.100:8000/api/getalldatatable'),
         headers: {
           'Content-Type': 'application/json',
           "Authorization": "Bearer $token"
@@ -65,6 +63,17 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
       return;
     }
 
+    // Check if the QR data already exists in the table
+    final existingEntry = tableData.firstWhere(
+      (data) => data['nomor_koper'] == parts[0],
+      orElse: () => {},
+    );
+
+    if (existingEntry != null) {
+      _showError('Barcode already exists in the table.');
+      return;
+    }
+
     final data = {
       'nomor_koper': parts[0],
       'nama_jamaah': parts[1],
@@ -74,8 +83,7 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
 
     try {
       final response = await http.post(
-        Uri.parse(
-            'https://laravel-10-retali-1-production.up.railway.app/api/datatable'),
+        Uri.parse('http://192.168.0.100:8000/api/datatable'),
         headers: {
           'Content-Type': 'application/json',
           "Authorization": "Bearer $token"
@@ -116,13 +124,13 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Data Jamaah'),
+        title: Text('Tabel Data Jamaah'),
         backgroundColor: Colors.purpleAccent,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : tableData.isEmpty
-              ? Center(child: Text('Belum ada data yang tersimpan'))
+              ? Center(child: Text('Belum ada data'))
               : SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(

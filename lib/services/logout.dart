@@ -8,14 +8,15 @@ Future<void> logout(BuildContext context) async {
   final token = prefs.getString('Token');
 
   await http.post(
-    Uri.parse('http://192.168.1.56:8000/api/logout'),
+    Uri.parse('http://192.168.0.100:8000/api/logout'),
     headers: {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token',
     },
   );
-  await prefs.remove('Token');
-  await prefs.remove('Username');
+  await prefs.remove('token');
+  await prefs.remove('username');
+
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => LoginPage()),

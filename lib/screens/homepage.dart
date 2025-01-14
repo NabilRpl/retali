@@ -10,8 +10,8 @@ import '../maps/pages/google_map_page.dart';
 import '../naskah/naskah_screen.dart';
 import '../prosedur/prosedur_screen.dart';
 import 'package:qr_code/profile/profile_page.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:qr_code/agenda/agenda_page.dart';
 import '../tugas/tugas_screen.dart';
 import 'camera_page.dart';
 
@@ -57,17 +57,6 @@ class _HomePageState extends State<HomePage> {
     NaskahScreen(),
     BimbinganIbadahScreen(),
   ];
-
-  Future<void> _uploadImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      print("Image selected: ${pickedFile.path}");
-    } else {
-      print("No image selected.");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +159,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCarouselSlider() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 0),
       child: CarouselSlider.builder(
         itemCount: imgList.length,
         itemBuilder: (context, index, realIdx) {
@@ -221,18 +210,18 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildMainContent(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 1.0),
+      padding: const EdgeInsets.symmetric(horizontal: 3.0),
       child: Container(
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        margin: const EdgeInsets.only(top: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 10),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 255, 255, 255),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.6),
               spreadRadius: 2,
               blurRadius: 3,
-              offset: Offset(0, 3),
+              offset: Offset(0, 2),
             ),
           ],
           borderRadius: BorderRadius.circular(10),
@@ -249,29 +238,31 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildIconGrid(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           Wrap(
-            spacing: 35,
-            runSpacing: 35,
+            spacing: 25,
+            runSpacing: 25,
             alignment: WrapAlignment.spaceEvenly,
             children: <Widget>[
               _iconWithText(Icons.book, 'Doa-doa', context),
-              _iconWithText(Icons.accessibility_new, 'Bimbingan\nIbadah', context),
+              _iconWithText(Icons.calendar_today_outlined, 'Agenda', context),
+              _iconWithText(
+                  Icons.accessibility_new, 'Bimbingan\nIbadah', context),
               _iconWithText(Icons.assignment, 'Naskah\nBriefing', context),
             ],
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 10),
           Wrap(
-            spacing: 35,
-            runSpacing: 35,
+            spacing: 25,
+            runSpacing: 25,
             alignment: WrapAlignment.spaceEvenly,
             children: <Widget>[
               _iconWithText(Icons.article, 'Prosedur', context),
               _iconWithText(Icons.list_alt, 'Tugas', context),
               _iconWithText(Icons.checklist, 'Ceklis', context),
-              _iconWithText(Icons.people, 'Jamaah', context), // Add Jamaah icon
+              _iconWithText(Icons.people, 'Jamaah', context),
             ],
           ),
         ],
@@ -296,7 +287,7 @@ class _HomePageState extends State<HomePage> {
     ];
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.2,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: potensiMasalahImages.length,
@@ -304,8 +295,8 @@ class _HomePageState extends State<HomePage> {
           final imagePath = potensiMasalahImages[index];
 
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-            width: MediaQuery.of(context).size.width * 0.55,
+            margin: EdgeInsets.symmetric(horizontal: 3, vertical: 9),
+            width: MediaQuery.of(context).size.width * 0.36,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -466,6 +457,9 @@ class _HomePageState extends State<HomePage> {
         if (label == 'Doa-doa') {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => DoaDoaScreen()));
+        } else if (label == 'Agenda') {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AgendaPage()));
         } else if (label == 'Bimbingan\nIbadah') {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => BimbinganIbadahScreen()));
@@ -482,8 +476,8 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => CeklisScreen()));
         } else if (label == 'Jamaah') {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AttendanceScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AttendanceScreen()));
         }
       },
       child: Column(

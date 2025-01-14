@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:qr_code/naskah/naskah_briefing_madinah/makam_baqi.dart';
-
-import 'gunung_uhud.dart';
-import 'makam_syuhada_uhud.dart';
-import 'masjid_abu_bakar_ash_shidiq.dart';
-import 'masjid_al_ghamamah.dart';
-import 'masjid_ali_bin_abi_thalib.dart';
-import 'masjid_nabawi.dart';
-import 'masjid_umar_bin_khatab.dart';
-import 'pengenalan_lingkungan_masjid.dart';
-import 'raudhah_asy_syarifah.dart';
-import 'saqifah_bani_saidah.dart';
+import 'package:qr_code/naskah/naskah_page.dart';
 
 class NaskahScreenMadinah extends StatelessWidget {
   final List<String> carouselImages = [
@@ -23,20 +12,23 @@ class NaskahScreenMadinah extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: screenHeight * 0.02),
           CarouselSlider(
             options: CarouselOptions(
-              height: 250.0,
+              height: screenHeight * 0.25,
               autoPlay: true,
               enlargeCenterPage: true,
               viewportFraction: 1.0, // Full width for each image
             ),
             items: carouselImages.map((imagePath) {
               return Container(
-                width: MediaQuery.of(context).size.width,
+                width: screenWidth,
                 decoration: BoxDecoration(
                   color: Color(0xFFE6E0F8),
                 ),
@@ -48,9 +40,9 @@ class NaskahScreenMadinah extends StatelessWidget {
               );
             }).toList(),
           ),
-          SizedBox(height: 20), // Added spacing here
+          SizedBox(height: screenHeight * 0.02), // Added spacing here
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -58,7 +50,7 @@ class NaskahScreenMadinah extends StatelessWidget {
                   'Bandara Jeddah ke Madinah',
                   style: TextStyle(
                     color: Colors.purple,
-                    fontSize: 24,
+                    fontSize: screenWidth * 0.06,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -66,35 +58,37 @@ class NaskahScreenMadinah extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: screenHeight * 0.01),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(screenWidth * 0.05),
               children: [
                 _buildDoaCard(context, 'Briefing Masjid Quba',
-                    'Dibacakan Saat City Tour Madinah ke Masjid Quba', MasjidQuba()),
+                    'Dibacakan Saat City Tour Madinah ke Masjid Quba', MasjidQuba(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Masjid Quba',
-                    'Dibaca ketika Ziarah Makam Baqi', MakamBaqi()),
+                    'Dibaca ketika Ziarah Makam Baqi', MakamBaqi(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Masjid Ali bin Abi Thalib',
-                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidAliBinAbiThalib()),
+                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidAliBinAbiThalib(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Masjid Umar Bin Khatab',
-                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidUmarBinKhatab()),
+                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidUmarBinKhatab(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Masjid Abu Bakar Ash Shiddiq',
-                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidAbuBakarAshShidiq()),
+                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidAbuBakarAshShidiq(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Gunung Uhud',
-                    'Dibaca saat City Tour Madinah', GunungUhud()),
+                    'Dibaca saat City Tour Madinah', GunungUhud(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Makam Syuhada Uhud',
-                    'Dibaca saat City Tour Madinah', MakamSyuhadaUhud()),
+                    'Dibaca saat City Tour Madinah', MakamSyuhadaUhud(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Saqifah Bani Saidah',
-                    'Dibaca saat di Raudhah', SaqifahBaniSaidah()),
+                    'Dibaca saat di Raudhah', SaqifahBaniSaidah(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Raudhah Asy Syarifah',
-                    'Dibaca saat City Tour Madinah', RaudhahAsySyarifah()),
+                    'Dibaca saat City Tour Madinah', RaudhahAsySyarifah(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Bukit Pemanah',
-                    'Dibaca saat City Tour Madinah', RaudhahAsySyarifah()),
+                    'Dibaca saat City Tour Madinah', BuktiPemanah(), screenWidth, screenHeight),
+                _buildDoaCard(context, 'Briefing Lingkungan Masjid',
+                    'Dibaca saat City Tour Madinah', PengenalanLingkunganMasjid(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Masjid Al Ghamamah',
-                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidAlGhamamah()),
+                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidAlGhamamah(), screenWidth, screenHeight),
                 _buildDoaCard(context, 'Briefing Masjid Nabawi',
-                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidNabawi()),
+                    'Dibaca saat pengenalan Lingkungan Masjid', MasjidNabawi(), screenWidth, screenHeight),
               ],
             ),
           ),
@@ -104,7 +98,7 @@ class NaskahScreenMadinah extends StatelessWidget {
   }
 
   Widget _buildDoaCard(BuildContext context, String title, String description,
-      Widget targetScreen) {
+      Widget targetScreen, double screenWidth, double screenHeight) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -115,30 +109,35 @@ class NaskahScreenMadinah extends StatelessWidget {
         );
       },
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: 8),
+        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
         elevation: 4,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(screenWidth * 0.05),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
                 'assets/images/Vector.png',
-                width: 40,
-                height: 40,
+                width: screenWidth * 0.1,
+                height: screenWidth * 0.1,
               ),
-              SizedBox(width: 10),
+              SizedBox(width: screenWidth * 0.04),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Text(description, style: TextStyle(fontSize: 16)),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      description,
+                      style: TextStyle(fontSize: screenWidth * 0.04),
+                    ),
                   ],
                 ),
               ),

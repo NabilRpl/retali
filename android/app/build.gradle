@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
 }
 
 def keystoreProperties = new Properties()
@@ -12,7 +13,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.example.qr_code"
-    compileSdk = flutter.compileSdkVersion
+    compileSdkVersion 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -27,7 +28,7 @@ android {
     defaultConfig {
         applicationId = "com.example.qr_code"
         minSdkVersion 21
-        targetSdk = flutter.targetSdkVersion
+        targetSdkVersion 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
