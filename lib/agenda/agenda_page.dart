@@ -17,38 +17,12 @@ class AgendaPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Agenda"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 80,
-                    color: Colors.grey[200],
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Container(
-                    height: 80,
-                    color: Colors.grey[200],
-                  ),
-                ),
-              ],
-            ),
+            Row(),
             SizedBox(height: 16),
             Expanded(
               child: ListView.builder(

@@ -12,6 +12,7 @@ class PotensiPage extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Kesehatan"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -95,6 +96,7 @@ class MasalahLogistik extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Logistik"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -228,6 +230,7 @@ class MasalahIbadah extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Ibadah"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -444,8 +447,8 @@ class MasalahIbadah extends StatelessWidget {
           _buildSubSection("Pencegahan:"),
           _buildBulletPoint(
               "Memberi tahu jamaah bahwa anak usia dini tidak bisa masuk raudhah."),
-
-          _buildSubSection("Dengan memperhatikan solusi dan pencegahan yang disorot, semoga jamaah dapat menghadapi dan mengatasi setiap tantangan dengan lebih siap dan tenang selama perjalanan ibadah Umrah mereka."),
+          _buildSubSection(
+              "Dengan memperhatikan solusi dan pencegahan yang disorot, semoga jamaah dapat menghadapi dan mengatasi setiap tantangan dengan lebih siap dan tenang selama perjalanan ibadah Umrah mereka."),
         ],
       ),
     );
@@ -502,6 +505,7 @@ class MasalahKeamanan extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Keamanan"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -590,7 +594,8 @@ class MasalahAdministratif extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text("Potensi Masalah Administratif"),
+        title: Text("Potensi Masalah Administrat                 if"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -704,6 +709,7 @@ class MasalahHotel extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Hotel"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -815,7 +821,8 @@ class MasalahTransportasi extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text("Potensi Masalah Transportasi"),
+        title: Text("Potensi Masalah Transportas                 i"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -921,6 +928,7 @@ class MasalahKomunikasi extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Komunikasi"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -1032,6 +1040,7 @@ class MasalahPsikologis extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Psikologis"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -1143,6 +1152,7 @@ class MasalahCuaca extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Cuaca"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(
@@ -1254,6 +1264,7 @@ class MasalahTeknologi extends StatelessWidget {
           },
         ),
         title: Text("Potensi Masalah Teknologi"),
+        foregroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 78, 29, 87),
       ),
       body: ListView(

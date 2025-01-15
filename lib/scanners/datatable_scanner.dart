@@ -29,7 +29,7 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.0.100:8000/api/getalldatatable'),
+        Uri.parse('http://192.168.1.83:8000/api/getalldatatable'),
         headers: {
           'Content-Type': 'application/json',
           "Authorization": "Bearer $token"
@@ -83,7 +83,7 @@ class _ScanAndDisplayPageState extends State<ScanAndDisplayPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.100:8000/api/datatable'),
+        Uri.parse('http://192.168.1.83:8000/api/datatable'),
         headers: {
           'Content-Type': 'application/json',
           "Authorization": "Bearer $token"

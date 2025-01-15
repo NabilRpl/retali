@@ -42,7 +42,7 @@ class _PersiapanCheckoutKepulanganState
   Future<void> fetchKloterData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token');
-    final url = Uri.parse("http://192.168.0.100:8000/api/kloter");
+    final url = Uri.parse("http://192.168.1.83:8000/api/kloter");
 
     try {
       final response = await http.get(url, headers: {
@@ -75,7 +75,7 @@ class _PersiapanCheckoutKepulanganState
     if (_formKey.currentState!.validate() && !selectedOptions.contains(null)) {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token');
-      final url = Uri.parse("http://192.168.0.100:8000/api/tugas");
+      final url = Uri.parse("http://192.168.1.83:8000/api/tugas");
       try {
         final response = await http.post(
           url,

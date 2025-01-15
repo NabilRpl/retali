@@ -6,12 +6,13 @@ import '../ceklis/ceklis_screen.dart';
 import '../doa-doa/doa_doa_screen.dart';
 import '../bimbingan-ibadah/bimbingan_ibadah_screen.dart';
 import '../jamaah/attendance_screen.dart';
-import '../maps/pages/google_map_page.dart';
+import '../location/page/locations_list_page.dart';
 import '../naskah/naskah_screen.dart';
 import '../prosedur/prosedur_screen.dart';
 import 'package:qr_code/profile/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qr_code/agenda/agenda_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../tugas/tugas_screen.dart';
 import 'camera_page.dart';
 
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> pages = [
     DoaDoaScreen(),
     TasksPage(),
-    GoogleMapPage(),
+    LocationsListPage(),
     ProsedurScreen(),
     NaskahScreen(),
     BimbinganIbadahScreen(),
@@ -198,7 +199,7 @@ class _HomePageState extends State<HomePage> {
           autoPlay: true,
           enlargeCenterPage: true,
           viewportFraction: 1.0,
-          height: 300,
+          height: 240,
           autoPlayInterval: Duration(seconds: 3),
           autoPlayAnimationDuration: Duration(milliseconds: 800),
           autoPlayCurve: Curves.fastOutSlowIn,
@@ -210,7 +211,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildMainContent(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3.0),
+      padding: const EdgeInsets.symmetric(horizontal: 1.0),
       child: Container(
         margin: const EdgeInsets.only(top: 0),
         padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 10),
@@ -246,11 +247,12 @@ class _HomePageState extends State<HomePage> {
             runSpacing: 25,
             alignment: WrapAlignment.spaceEvenly,
             children: <Widget>[
-              _iconWithText(Icons.book, 'Doa-doa', context),
-              _iconWithText(Icons.calendar_today_outlined, 'Agenda', context),
+              _iconWithText(FontAwesomeIcons.prayingHands, 'Doa-doa', context),
+              _iconWithText(FontAwesomeIcons.calendar, 'Agenda', context),
               _iconWithText(
-                  Icons.accessibility_new, 'Bimbingan\nIbadah', context),
-              _iconWithText(Icons.assignment, 'Naskah\nBriefing', context),
+                  FontAwesomeIcons.kaaba, 'Bimbingan\nIbadah', context),
+              _iconWithText(
+                  FontAwesomeIcons.fileAlt, 'Naskah\nBriefing', context),
             ],
           ),
           SizedBox(height: 10),
@@ -259,10 +261,10 @@ class _HomePageState extends State<HomePage> {
             runSpacing: 25,
             alignment: WrapAlignment.spaceEvenly,
             children: <Widget>[
-              _iconWithText(Icons.article, 'Prosedur', context),
-              _iconWithText(Icons.list_alt, 'Tugas', context),
-              _iconWithText(Icons.checklist, 'Ceklis', context),
-              _iconWithText(Icons.people, 'Jamaah', context),
+              _iconWithText(FontAwesomeIcons.book, 'Prosedur', context),
+              _iconWithText(FontAwesomeIcons.bookOpenReader, 'Tugas', context),
+              _iconWithText(FontAwesomeIcons.tasks, 'Ceklis', context),
+              _iconWithText(FontAwesomeIcons.userCheck, 'Jamaah', context),
             ],
           ),
         ],
@@ -298,7 +300,6 @@ class _HomePageState extends State<HomePage> {
             margin: EdgeInsets.symmetric(horizontal: 3, vertical: 9),
             width: MediaQuery.of(context).size.width * 0.36,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
             ),
             child: InkWell(
               onTap: () {
@@ -338,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                     destinationPage = MasalahTeknologi();
                     break;
                   default:
-                    destinationPage = GoogleMapPage();
+                    destinationPage = LocationsListPage();
                     break;
                 }
                 Navigator.push(
@@ -424,7 +425,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GoogleMapPage()),
+                  MaterialPageRoute(builder: (context) => LocationsListPage()),
                 );
               },
             ),
@@ -449,7 +450,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _iconWithText(IconData icon, String label, BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double iconSize = screenWidth * 0.09;
+    double iconSize = screenWidth * 0.08;
     double padding = screenWidth * 0.04;
 
     return GestureDetector(
@@ -486,8 +487,14 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: EdgeInsets.all(padding),
             decoration: BoxDecoration(
-              color: Color(0xFFE6E0F8),
-              borderRadius: BorderRadius.circular(10),
+              color: const Color.fromARGB(
+                  255, 255, 255, 255), // Warna latar belakang container
+              borderRadius: BorderRadius.circular(40),
+              border: Border.all(
+                color:
+                    const Color.fromARGB(255, 109, 109, 109), // Warna bingkai
+                width: 1.5, // Ketebalan bingkai
+              ),
             ),
             child: Icon(
               icon,
@@ -495,12 +502,13 @@ class _HomePageState extends State<HomePage> {
               color: const Color.fromARGB(255, 78, 29, 87),
             ),
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 5),
           Text(
             label,
             style: TextStyle(
               color: Colors.black,
               fontSize: screenWidth * 0.035,
+              fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),

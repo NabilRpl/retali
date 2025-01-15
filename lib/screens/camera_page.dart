@@ -21,8 +21,8 @@ class _TasksPageState extends State<TasksPage> {
 
   Future<void> fetchTasks() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://192.168.0.100:8000/api/tugaskonten'));
+      final response =
+          await http.get(Uri.parse('http://192.168.1.83:8000/api/tugaskonten'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {

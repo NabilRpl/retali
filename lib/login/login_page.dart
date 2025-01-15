@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isSaveLoginChecked = false;
   // Tambahkan metode login API
   Future<void> _login() async {
-    final url = Uri.parse("http://192.168.0.100:8000/api/login");
+    final url = Uri.parse("http://192.168.1.83:8000/api/login");
     try {
       final response = await http.post(
         url,
